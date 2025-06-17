@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Register</title>
+		<link rel="stylesheet" href="./style/register.css" />
+		<script src="./js/register.js" defer></script>
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Barlow&display=swap" rel="stylesheet">
+	</head>
+	<body>
+		<nav>
+			<ul>
+				<li><a href="./index.html">Home</a></li>
+				<li><a href="./team.html">Team</a></li>
+				<li><a class="active" href="./register.html">Register</a></li>
+				<li><a href="./login.html">Login</a></li>
+			</ul>
+		</nav>
+		<h1>Please register below</h1>
+		<form>
+			<label for="email">Email: </label>
+			<input
+				type="email"
+				name="email"
+				id="email"
+				placeholder="example@domain.com"
+				required
+			/>
+			<br />
+			<label for="username">Username: </label>
+			<input
+				type="text"
+				name="username"
+				id="username"
+				placeholder="Rick"
+				required
+			/>
+			<br />
+			<label for="password">Password(6 characters minimum): </label>
+			<input
+				type="password"
+				name="password"
+				id="password"
+				minlength="6"
+				placeholder="pass1234"
+				required
+			/>
+			<label for="checkboxPassword">
+				<input type="checkbox" name="checkboxPassword" id="checkboxPassword" />
+				Show Password
+			</label>
+			<span id="strength"></span>
+			<br />
+			<label for="passwordCheck">Confirm password: </label>
+			<input
+				type="password"
+				name="passwordCheck"
+				id="passwordCheck"
+				placeholder="pass1234"
+				required
+			/>
+			<label for="checkboxPasswordCheck">
+				<input
+					type="checkbox"
+					name="checkboxPasswordCheck"
+					id="checkboxPasswordCheck"
+				/>
+				Show Password
+			</label>
+			<span id="message"></span>
+			<br />
+			<button id="register">Register</button>
+			<input id="reset" type="reset" value="Reset" />
+		</form>
+		<br /><br /><br /><br /><br />
+	</body>
+</html>

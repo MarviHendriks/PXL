@@ -1,0 +1,265 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > Mare</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">be.pxl.researchproject.domain</a>
+</div>
+
+<h1>Coverage Summary for Class: Mare (be.pxl.researchproject.domain)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Mare</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    92,9%
+  </span>
+  <span class="absValue">
+    (26/28)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    51,6%
+  </span>
+  <span class="absValue">
+    (33/64)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package be.pxl.researchproject.domain;
+&nbsp;
+&nbsp;import jakarta.persistence.Entity;
+&nbsp;import jakarta.persistence.GeneratedValue;
+&nbsp;import jakarta.persistence.Id;
+&nbsp;import jakarta.persistence.OneToOne;
+&nbsp;import org.springframework.format.annotation.DateTimeFormat;
+&nbsp;import jakarta.persistence.*;
+&nbsp;
+&nbsp;import java.time.LocalDate;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;@Entity
+&nbsp;public class Mare{
+&nbsp;    @Id
+&nbsp;    @GeneratedValue
+&nbsp;    private Long id;
+&nbsp;    private String name;
+&nbsp;    private LocalDate dateOfBirth;
+&nbsp;    private double height;
+&nbsp;    private String gender;
+&nbsp;    private LocalDate dueDate;
+&nbsp;    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+&nbsp;    @JoinColumn(name = &quot;mare_id2&quot;)
+&nbsp;    private List&lt;Covering&gt; coverings;
+&nbsp;    private boolean isPregnant;
+&nbsp;    private Integer daysPregnant;
+&nbsp;
+&nbsp;    private Integer daysUntilDueDate;
+&nbsp;    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+&nbsp;    @JoinColumn(name = &quot;mare_id&quot;)
+&nbsp;    private List&lt;DiaryEntry&gt; diary;
+&nbsp;
+&nbsp;    @OneToOne(cascade = CascadeType.ALL)
+&nbsp;    @JoinColumn(name = &quot;foal_id&quot;)
+&nbsp;    private Foal foal;
+&nbsp;
+<b class="fc">&nbsp;</b>
+&nbsp;    //PDF
+<b class="fc">&nbsp;    @Lob</b>
+<b class="fc">&nbsp;    @Column(columnDefinition = &quot;MEDIUMBLOB&quot;)</b>
+<b class="fc">&nbsp;    private byte[] pdfFile;</b>
+<b class="fc">&nbsp;</b>
+<b class="fc">&nbsp;    public Mare() {</b>
+<b class="fc">&nbsp;    }</b>
+<b class="fc">&nbsp;    public Mare(String name, LocalDate dateOfBirth, double height, String gender) {</b>
+<b class="fc">&nbsp;        this.name = name;</b>
+<b class="nc">&nbsp;        this.dateOfBirth = dateOfBirth;</b>
+<b class="nc">&nbsp;        this.height = height;</b>
+<b class="nc">&nbsp;        this.gender = gender.toLowerCase();</b>
+<b class="fc">&nbsp;        this.isPregnant = false;</b>
+<b class="nc">&nbsp;        this.diary = new ArrayList&lt;&gt;();</b>
+<b class="nc">&nbsp;        this.coverings = new ArrayList&lt;&gt;();</b>
+&nbsp;    }
+<b class="fc">&nbsp;</b>
+&nbsp;    public Long getId() {
+<b class="nc">&nbsp;        return id;</b>
+&nbsp;    }
+<b class="fc">&nbsp;</b>
+&nbsp;    public void setId(Long id) {
+<b class="nc">&nbsp;        this.id = id;</b>
+&nbsp;    }
+<b class="fc">&nbsp;</b>
+&nbsp;    public String getName() {
+<b class="nc">&nbsp;        return name;</b>
+&nbsp;    }
+<b class="fc">&nbsp;</b>
+&nbsp;    public void setName(String name) {
+<b class="nc">&nbsp;        this.name = name;</b>
+&nbsp;    }
+<b class="fc">&nbsp;</b>
+&nbsp;    public LocalDate getDateOfBirth() {
+<b class="nc">&nbsp;        return dateOfBirth;</b>
+&nbsp;    }
+<b class="fc">&nbsp;</b>
+&nbsp;    public void setDateOfBirth(LocalDate dateOfBirth) {
+<b class="nc">&nbsp;        this.dateOfBirth = dateOfBirth;</b>
+&nbsp;    }
+<b class="fc">&nbsp;</b>
+&nbsp;    public double getHeight() {
+<b class="nc">&nbsp;        return height;</b>
+&nbsp;    }
+<b class="fc">&nbsp;</b>
+&nbsp;    public void setHeight(double height) {
+<b class="nc">&nbsp;        this.height = height;</b>
+<b class="fc">&nbsp;    }</b>
+&nbsp;
+&nbsp;    public String getGender() {
+<b class="nc">&nbsp;        return gender;</b>
+<b class="fc">&nbsp;    }</b>
+&nbsp;    public void setGender(String gender) {
+<b class="nc">&nbsp;        this.gender = gender;</b>
+&nbsp;    }
+<b class="fc">&nbsp;</b>
+&nbsp;    public LocalDate getDueDate() {
+<b class="nc">&nbsp;        return dueDate;</b>
+&nbsp;    }
+&nbsp;
+<b class="fc">&nbsp;    public void setDueDate(LocalDate dueDate) {</b>
+<b class="nc">&nbsp;        this.dueDate = dueDate;</b>
+&nbsp;    }
+&nbsp;
+<b class="fc">&nbsp;</b>
+&nbsp;    public List&lt;Covering&gt; getCoverings() {
+<b class="nc">&nbsp;        return coverings;</b>
+&nbsp;    }
+<b class="fc">&nbsp;</b>
+&nbsp;    public void setCoverings(List&lt;Covering&gt; coverings) {
+<b class="nc">&nbsp;        this.coverings = coverings;</b>
+&nbsp;    }
+<b class="fc">&nbsp;</b>
+&nbsp;    public boolean isPregnant() {
+<b class="nc">&nbsp;        return isPregnant;</b>
+&nbsp;    }
+<b class="fc">&nbsp;</b>
+&nbsp;    public void setPregnant(boolean pregnant) {
+<b class="nc">&nbsp;        isPregnant = pregnant;</b>
+&nbsp;    }
+<b class="fc">&nbsp;</b>
+&nbsp;    public List&lt;DiaryEntry&gt; getDiary() {
+<b class="nc">&nbsp;        return diary;</b>
+&nbsp;    }
+<b class="fc">&nbsp;</b>
+&nbsp;    public void setDiary(List&lt;DiaryEntry&gt; diary) {
+<b class="nc">&nbsp;        this.diary = diary;</b>
+&nbsp;    }
+<b class="fc">&nbsp;</b>
+&nbsp;    public Integer getDaysPregnant() {
+<b class="nc">&nbsp;        return daysPregnant;</b>
+&nbsp;    }
+<b class="fc">&nbsp;</b>
+&nbsp;    public void setDaysPregnant(Integer daysPregnant) {
+<b class="nc">&nbsp;        this.daysPregnant = daysPregnant;</b>
+&nbsp;    }
+<b class="fc">&nbsp;</b>
+&nbsp;    public Integer getDaysUntilDueDate() {
+<b class="nc">&nbsp;        return daysUntilDueDate;</b>
+&nbsp;    }
+<b class="fc">&nbsp;</b>
+&nbsp;    public void setDaysUntilDueDate(Integer daysUntilDueDate) {
+<b class="nc">&nbsp;        this.daysUntilDueDate = daysUntilDueDate;</b>
+&nbsp;    }
+<b class="fc">&nbsp;</b>
+&nbsp;    public Foal getFoal() {
+<b class="nc">&nbsp;        return foal;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setFoal(Foal foal) {
+<b class="nc">&nbsp;        this.foal = foal;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //PDF
+&nbsp;    public void setPdfFile(byte[] pdfFile) {
+<b class="nc">&nbsp;        this.pdfFile = pdfFile;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public byte[] getPdfFile() {
+<b class="nc">&nbsp;        return pdfFile;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-05-20 22:56</div>
+</div>
+</body>
+</html>

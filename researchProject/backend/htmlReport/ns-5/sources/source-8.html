@@ -1,0 +1,221 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > NotificationService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">be.pxl.researchproject.service</a>
+</div>
+
+<h1>Coverage Summary for Class: NotificationService (be.pxl.researchproject.service)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">NotificationService</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (16/32)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    76,1%
+  </span>
+  <span class="absValue">
+    (35/46)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package be.pxl.researchproject.service;
+&nbsp;
+&nbsp;
+&nbsp;import be.pxl.researchproject.api.response.NotificationDTO;
+&nbsp;import be.pxl.researchproject.domain.Deworming;
+&nbsp;import be.pxl.researchproject.domain.Foal;
+&nbsp;import be.pxl.researchproject.domain.Mare;
+&nbsp;import be.pxl.researchproject.domain.Notification;
+&nbsp;import be.pxl.researchproject.repository.MareRepository;
+&nbsp;import be.pxl.researchproject.repository.NotificationRepository;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;
+&nbsp;import java.time.LocalDate;
+&nbsp;import java.time.temporal.ChronoUnit;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Optional;
+&nbsp;import java.util.stream.Collectors;
+&nbsp;
+&nbsp;@Service
+<b class="fc">&nbsp;public class NotificationService {</b>
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private NotificationRepository notificationRepository;
+&nbsp;    @Autowired
+&nbsp;    private MareRepository mareRepository;
+&nbsp;
+&nbsp;    public void generateNotifications(List&lt;Mare&gt; mares, List&lt;Foal&gt; foals) {
+<b class="fc">&nbsp;        notificationRepository.deleteAll();</b>
+<b class="fc">&nbsp;        for (Mare mare : mares) {</b>
+<b class="pc">&nbsp;            if(mare.isPregnant()) {</b>
+<b class="fc">&nbsp;                int daysUntilDueDate = mare.getDaysUntilDueDate();</b>
+<b class="pc">&nbsp;                if (mare.getDueDate() != null &amp;&amp; daysUntilDueDate &lt;= 7) {</b>
+<b class="nc">&nbsp;                    String title = &quot;&quot;;</b>
+<b class="nc">&nbsp;                    if (daysUntilDueDate &lt; 0) {</b>
+<b class="nc">&nbsp;                        title = &quot;Merrie zou elk moment kunnen bevallen&quot;;</b>
+<b class="nc">&nbsp;                    } else if (daysUntilDueDate == 0) {</b>
+<b class="nc">&nbsp;                        title = &quot;Merrie komt vandaag te bevallen&quot;;</b>
+<b class="nc">&nbsp;                    } else if (daysUntilDueDate == 1) {</b>
+<b class="nc">&nbsp;                        title = &quot;Merrie komt morgen te bevallen&quot;;</b>
+&nbsp;                    } else {
+<b class="nc">&nbsp;                        title = &quot;Merrie komt te bevallen binnen &quot; + daysUntilDueDate + &quot; dag(en)&quot;;</b>
+&nbsp;                    }
+<b class="nc">&nbsp;                    createNotification(title, LocalDate.now(), mare, null);</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        for (Foal foal : foals) {</b>
+<b class="fc">&nbsp;            for (Deworming deworming : foal.getDewormings()) {</b>
+<b class="fc">&nbsp;                LocalDate dewormingDate = deworming.getDate();</b>
+<b class="fc">&nbsp;                LocalDate today = LocalDate.now();</b>
+<b class="fc">&nbsp;                Optional&lt;Mare&gt; mareResult = mareRepository.findByFoalId(foal.getId());</b>
+<b class="fc">&nbsp;                Mare mare = null;</b>
+<b class="pc">&nbsp;                if(mareResult.isPresent()){</b>
+<b class="nc">&nbsp;                    mare = mareResult.get();</b>
+&nbsp;                }
+&nbsp;
+<b class="pc">&nbsp;                if (dewormingDate.getMonthValue() == today.getMonthValue() &amp;&amp;</b>
+<b class="pc">&nbsp;                        dewormingDate.getDayOfMonth() - today.getDayOfMonth() &lt;= 0) {</b>
+<b class="fc">&nbsp;                    createNotification(deworming.getTitle() + &quot; moet vandaag worden toegediend&quot;, dewormingDate,mare, foal);</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    private void createNotification(String title, LocalDate date, Mare mare, Foal foal) {
+<b class="fc">&nbsp;        Notification notification = new Notification();</b>
+<b class="fc">&nbsp;        notification.setTitle(title);</b>
+<b class="fc">&nbsp;        notification.setDate(date);</b>
+<b class="fc">&nbsp;        notification.setUnread(true);</b>
+<b class="pc">&nbsp;        if (mare != null) {</b>
+<b class="nc">&nbsp;            notification.setMare(mare);</b>
+&nbsp;        }
+<b class="pc">&nbsp;        if (foal != null) {</b>
+<b class="fc">&nbsp;            notification.setFoal(foal);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        notificationRepository.save(notification);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void deleteAllNotifications() {
+<b class="fc">&nbsp;        notificationRepository.deleteAll();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    public List&lt;NotificationDTO&gt; getAllNotifications() {
+<b class="fc">&nbsp;        return notificationRepository.findAll().stream().map(notification -&gt; {</b>
+<b class="pc">&nbsp;            Long mareId = notification.getMare() != null ? notification.getMare().getId() : null;</b>
+<b class="pc">&nbsp;            Long foalId = notification.getFoal() != null ? notification.getFoal().getId() : null;</b>
+<b class="fc">&nbsp;            return new NotificationDTO(notification.getId(), notification.getTitle(), notification.isUnread(), notification.getDate(), mareId, foalId);</b>
+&nbsp;        })
+<b class="fc">&nbsp;                .collect(Collectors.toList());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Notification markNotification(Long id) {
+<b class="fc">&nbsp;        Notification notification = notificationRepository.findById(id).orElseThrow();</b>
+<b class="fc">&nbsp;        notification.setUnread(!notification.isUnread());</b>
+<b class="fc">&nbsp;        notificationRepository.save(notification);</b>
+<b class="fc">&nbsp;        return notification;</b>
+&nbsp;    }
+&nbsp;    public int getAmountOfUnreadNotifications(){
+<b class="fc">&nbsp;        return notificationRepository.findAll().stream().filter(Notification::isUnread).toList().size();</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-05-20 22:56</div>
+</div>
+</body>
+</html>

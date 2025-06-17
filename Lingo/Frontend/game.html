@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Game</title>
+		<link rel="stylesheet" href="style/game.css" />
+		<script src="js/game.js" defer></script>
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Barlow&display=swap" rel="stylesheet">
+	</head>
+	<body>
+		<table id="fixedLeft">
+			<tr>
+				<th colspan="2">You</th>
+			</tr>
+			<tr>
+				<td>Name:</td>
+				<td id="playerName"></td>
+			</tr>
+			<tr>
+				<td>Score:</td>
+				<td id="playerScore"></td>
+			</tr>
+			
+
+			<tr>
+				<th colspan="2">Your opponent</th>
+			</tr>
+			<tr>
+				<td>Name:</td>
+				<td id="opponentName"></td>
+			</tr>
+			<tr>
+				<td>Score:</td>
+				<td id="opponentScore"></td>
+			</tr>
+			
+		</table>
+		<table id="fixedRight">
+			<tr>
+				<th>Color</th>
+				<th>Meaning</th>
+			</tr>
+			<tr>
+				<td>Green</td>
+				<td>Correct letter, correct place</td>
+			</tr>
+			<tr>
+				<td>Orange</td>
+				<td>Correct letter, wrong place</td>
+			</tr>
+			<tr>
+				<td>Red</td>
+				<td>Wrong letter</td>
+			</tr>
+			<hr class="hr" id="hrke">
+		</table>
+		
+			
+			<table id="lingoCardNumber"></table>
+		
+		
+		<h1 id="goodLuck"></h1>
+		
+		<h1 id="loser"></h1>
+		<hr class="hr" id="hrke2" >
+		<button id="returnButton">Back to the waitingroom</button>
+		<p id="wrong"></p>
+		<div id="puzzling">
+			<div id="lingoWordPuzzle">
+				<ul id="wordLetters"></ul>
+				<ul id="guessLetters"></ul>
+			</div>
+
+			<div id="userControls">
+				<input id="wordGuess" />
+				<button id="submitAnswerButton">Submit Anwser</button>
+			</div>
+		</div>
+
+		<div id="userTurnInfo">
+			<p></p>
+		</div>
+
+		
+		
+		</div>
+		<div id="ballPitContainer">
+			<p id="hasLingo">You guessed the correct word! You can grab a ball and get 25 points!;
+			</p>
+			
+				<button id="grabBallButton">Grab ball</button>
+				<button id="closeButton"></button>
+		</div>
+		<div id="ballInfo">
+			<p id="ballNumber"></p>
+		</div>
+		<div id="lingoContainer"></div>
+<div id="lingoContainerText">LINGO</div>
+<div id="lingoContainerText1">You scored 100 points!</div>
+<button id="closeButton2">Close</button>
+
+		<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+	</body>
+</html>

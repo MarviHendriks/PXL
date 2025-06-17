@@ -1,0 +1,301 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > FoalService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">be.pxl.researchproject.service</a>
+</div>
+
+<h1>Coverage Summary for Class: FoalService (be.pxl.researchproject.service)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">FoalService</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    87,5%
+  </span>
+  <span class="absValue">
+    (7/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    82,3%
+  </span>
+  <span class="absValue">
+    (51/62)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    92,4%
+  </span>
+  <span class="absValue">
+    (85/92)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package be.pxl.researchproject.service;
+&nbsp;
+&nbsp;import be.pxl.researchproject.exceptions.FoalNotFoundException;
+&nbsp;import be.pxl.researchproject.exceptions.InvalidFoalCreatingException;
+&nbsp;import be.pxl.researchproject.exceptions.MareNotFoundException;
+&nbsp;import be.pxl.researchproject.api.request.CreateFoalRequest;
+&nbsp;import be.pxl.researchproject.api.request.DeleteFoalRequest;
+&nbsp;import be.pxl.researchproject.api.request.UpdateDewormingRequest;
+&nbsp;import be.pxl.researchproject.api.request.UpdateFoalRequest;
+&nbsp;import be.pxl.researchproject.api.response.FoalDTO;
+&nbsp;import be.pxl.researchproject.domain.Covering;
+&nbsp;import be.pxl.researchproject.domain.Deworming;
+&nbsp;import be.pxl.researchproject.domain.Foal;
+&nbsp;import be.pxl.researchproject.domain.Mare;
+&nbsp;import be.pxl.researchproject.repository.CoveringRepository;
+&nbsp;import be.pxl.researchproject.repository.DewormingRepository;
+&nbsp;import be.pxl.researchproject.repository.FoalRepository;
+&nbsp;import be.pxl.researchproject.repository.MareRepository;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;import org.springframework.transaction.annotation.Transactional;
+&nbsp;
+&nbsp;import java.time.LocalDate;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Optional;
+&nbsp;
+&nbsp;@Service
+<b class="fc">&nbsp;public class FoalService {</b>
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private FoalRepository foalRepository;
+&nbsp;    @Autowired
+&nbsp;    private MareRepository mareRepository;
+&nbsp;    @Autowired
+&nbsp;    private DewormingRepository dewormingRepository;
+&nbsp;    @Autowired
+&nbsp;    private CoveringRepository coveringRepository;
+&nbsp;
+&nbsp;    @Transactional
+&nbsp;    public Foal addFoal(Long id, CreateFoalRequest request) {
+<b class="fc">&nbsp;        Optional&lt;Mare&gt; result = mareRepository.findById(id);</b>
+&nbsp;
+<b class="fc">&nbsp;        if (!result.isPresent()) {</b>
+<b class="fc">&nbsp;            throw new MareNotFoundException(&quot;De merrie is niet gevonden&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        else if(result.get().getFoal() != null){</b>
+<b class="fc">&nbsp;            throw new InvalidFoalCreatingException(&quot;Merrie heeft al een veulen&quot;);</b>
+<b class="pc">&nbsp;        } else if (request.name() == null ||</b>
+<b class="fc">&nbsp;        request.gender() == null ||</b>
+<b class="fc">&nbsp;        request.height() == 0 ||</b>
+<b class="pc">&nbsp;        request.dateOfBirth() == null ||</b>
+<b class="fc">&nbsp;        request.stallion() == null) {</b>
+<b class="fc">&nbsp;            throw new InvalidFoalCreatingException(&quot;Alle velden moeten ingevuld zijn&quot;);</b>
+&nbsp;        } else {
+<b class="fc">&nbsp;            String[] medicaties = {&quot;Panacur&quot;,&quot;Pyrantel&quot;,&quot;Eraquell&quot;,&quot;Panacur&quot;};</b>
+<b class="fc">&nbsp;            Foal foal = new Foal(request.name(), request.dateOfBirth(), request.height(), request.gender(), request.stallion());</b>
+&nbsp;
+<b class="fc">&nbsp;            for (int i = 1; i &lt; 5; i++ ){</b>
+<b class="fc">&nbsp;                String title = &quot;ontworming &quot; + i + &quot; (&quot; + medicaties[i - 1] + &quot;)&quot;;</b>
+<b class="fc">&nbsp;                LocalDate date = foal.getDateOfBirth().plusMonths(i);</b>
+<b class="fc">&nbsp;                Deworming deworming = new Deworming(title, false, date);</b>
+<b class="fc">&nbsp;                foal.getDewormings().add(dewormingRepository.save(deworming));</b>
+&nbsp;            }
+&nbsp;
+<b class="fc">&nbsp;            Mare mare = result.get();</b>
+&nbsp;
+<b class="fc">&nbsp;            if (mare.getCoverings().size() == 0){</b>
+<b class="fc">&nbsp;                throw new InvalidFoalCreatingException(&quot;Kan geen veulen toevoegen aan een merrie zonder dekdatums&quot;);</b>
+&nbsp;            }
+&nbsp;
+<b class="fc">&nbsp;            List&lt;Long&gt; coveringIds = mare.getCoverings().stream().map(Covering::getId).toList();</b>
+&nbsp;
+<b class="fc">&nbsp;            mare.setDaysPregnant(null);</b>
+<b class="fc">&nbsp;            mare.setCoverings(null);</b>
+<b class="fc">&nbsp;            mare.setDaysUntilDueDate(null);</b>
+<b class="fc">&nbsp;            mare.setDueDate(null);</b>
+<b class="fc">&nbsp;            mare.setPregnant(false);</b>
+<b class="fc">&nbsp;            mare.setFoal(foal);</b>
+&nbsp;
+<b class="fc">&nbsp;            coveringRepository.deleteAllById(coveringIds);</b>
+<b class="fc">&nbsp;            Foal newFoal = foalRepository.save(foal);</b>
+<b class="fc">&nbsp;            mareRepository.save(mare);</b>
+&nbsp;
+<b class="fc">&nbsp;            return newFoal;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    public FoalDTO findFoalByMareId(long id) {
+<b class="fc">&nbsp;        Optional&lt;Mare&gt; result = mareRepository.findById(id);</b>
+&nbsp;
+<b class="fc">&nbsp;        if (result.isPresent()) {</b>
+<b class="fc">&nbsp;            Mare mare = result.get();</b>
+<b class="fc">&nbsp;            Foal foal = mare.getFoal();</b>
+<b class="pc">&nbsp;            if (foal == null) {</b>
+<b class="nc">&nbsp;                throw new FoalNotFoundException(&quot;De merrie heeft geen veulen&quot;);</b>
+&nbsp;            }
+<b class="fc">&nbsp;            return new FoalDTO(foal.getId(), foal.getName(), foal.getDateOfBirth(), foal.getHeight(), foal.getGender(), foal.getStallion(), foal.getDewormings());</b>
+&nbsp;        } else {
+<b class="fc">&nbsp;            throw new FoalNotFoundException(&quot;Het veulen is niet gevonden&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;    public FoalDTO findFoalById(long id) {
+<b class="nc">&nbsp;        Optional&lt;Foal&gt; result = foalRepository.findById(id);</b>
+&nbsp;
+<b class="nc">&nbsp;        if (result.isPresent()) {</b>
+<b class="nc">&nbsp;            Foal foal = result.get();</b>
+<b class="nc">&nbsp;            return new FoalDTO(foal.getId(), foal.getName(), foal.getDateOfBirth(), foal.getHeight(), foal.getGender(), foal.getStallion(), foal.getDewormings());</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            throw new FoalNotFoundException(&quot;Het veulen is niet gevonden&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    public void updateDeworming(Long id, UpdateDewormingRequest request){
+<b class="fc">&nbsp;        Optional&lt;Deworming&gt; result = dewormingRepository.findById(id);</b>
+<b class="fc">&nbsp;        Deworming deworming = result.orElse(null);</b>
+<b class="fc">&nbsp;        if (deworming != null &amp;&amp; deworming.isDone() != request.isDone()) {</b>
+<b class="fc">&nbsp;            deworming.setDone(request.isDone());</b>
+<b class="fc">&nbsp;            dewormingRepository.save(deworming);</b>
+<b class="pc">&nbsp;        } else if (deworming != null &amp;&amp; request.isDone() == deworming.isDone()) {</b>
+<b class="fc">&nbsp;            throw new InvalidFoalCreatingException(&quot;Ontworming niet aangepast&quot;);</b>
+&nbsp;        } else {
+<b class="fc">&nbsp;            throw new InvalidFoalCreatingException(&quot;Ontworming niet gevonden&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    public void updateFoal(Long id, UpdateFoalRequest request){
+<b class="fc">&nbsp;        Optional&lt;Foal&gt; result = foalRepository.findById(id);</b>
+<b class="fc">&nbsp;        Foal foal = result.orElse(null);</b>
+&nbsp;
+<b class="fc">&nbsp;        if (foal != null &amp;&amp;</b>
+<b class="fc">&nbsp;                request.name() != null &amp;&amp;</b>
+<b class="fc">&nbsp;                request.height() &gt; 0.0 &amp;&amp;</b>
+<b class="pc">&nbsp;                request.dateOfBirth() != null) {</b>
+<b class="fc">&nbsp;            foal.setName(request.name());</b>
+<b class="fc">&nbsp;            foal.setHeight(request.height());</b>
+<b class="fc">&nbsp;            LocalDate date = LocalDate.parse(request.dateOfBirth());</b>
+<b class="fc">&nbsp;            foal.setDateOfBirth(date);</b>
+<b class="fc">&nbsp;            foal.getDewormings().clear();</b>
+&nbsp;
+<b class="fc">&nbsp;            String[] medicaties = {&quot;Panacur&quot;,&quot;Pyrantel&quot;,&quot;Eraquell&quot;,&quot;Panacur&quot;};</b>
+&nbsp;
+<b class="fc">&nbsp;            for (int i = 1; i &lt; 5; i++ ){</b>
+<b class="fc">&nbsp;                String title = &quot;ontworming &quot; + i + &quot; (&quot; + medicaties[i - 1] + &quot;)&quot;;</b>
+<b class="fc">&nbsp;                LocalDate newDate = foal.getDateOfBirth().plusMonths(i);</b>
+<b class="fc">&nbsp;                Deworming deworming = new Deworming(title, false, newDate);</b>
+<b class="fc">&nbsp;                foal.getDewormings().add(dewormingRepository.save(deworming));</b>
+&nbsp;            }
+&nbsp;
+<b class="fc">&nbsp;            foalRepository.save(foal);</b>
+<b class="fc">&nbsp;        } else if (foal != null &amp;&amp; (</b>
+<b class="fc">&nbsp;                request.name() == null ||</b>
+<b class="pc">&nbsp;                request.height() &lt;= 0.0 ||</b>
+<b class="nc">&nbsp;                request.dateOfBirth() == null)) {</b>
+<b class="fc">&nbsp;            throw new FoalNotFoundException(&quot;Alle velden moeten ingvuld zijn&quot;);</b>
+&nbsp;        } else {
+<b class="fc">&nbsp;            throw new FoalNotFoundException(&quot;Het veulen is niet gevonden&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    @Transactional
+&nbsp;    public void deleteFoalById(Long id, DeleteFoalRequest request) {
+<b class="fc">&nbsp;        Optional&lt;Mare&gt; result = mareRepository.findById(request.mareId());</b>
+<b class="fc">&nbsp;        Mare mare = result.orElse(null);</b>
+&nbsp;
+<b class="fc">&nbsp;        if (mare != null &amp;&amp; mare.getFoal() != null) {</b>
+<b class="fc">&nbsp;            mare.setFoal(null);</b>
+<b class="fc">&nbsp;            mareRepository.save(mare);</b>
+<b class="fc">&nbsp;            foalRepository.deleteById(id);</b>
+<b class="pc">&nbsp;        } else if (mare != null &amp;&amp; mare.getFoal() == null) {</b>
+<b class="fc">&nbsp;            throw new FoalNotFoundException(&quot;De merrie heeft geen veulen&quot;);</b>
+&nbsp;        } else {
+<b class="fc">&nbsp;            throw new MareNotFoundException(&quot;De merrie is niet gevonden&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    public boolean amountOfClients(Long id) {
+<b class="fc">&nbsp;        Optional&lt;Foal&gt; optionalFoal = foalRepository.findById(id);</b>
+<b class="fc">&nbsp;        if (optionalFoal.isPresent()) {</b>
+<b class="fc">&nbsp;            Foal foal = optionalFoal.get();</b>
+<b class="fc">&nbsp;            return foal.getClient() != null;</b>
+&nbsp;        } else {
+<b class="fc">&nbsp;            throw new FoalNotFoundException(&quot;Het veulen is niet gevonden&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-05-20 22:56</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,148 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ClientController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">be.pxl.researchproject.controllers</a>
+</div>
+
+<h1>Coverage Summary for Class: ClientController (be.pxl.researchproject.controllers)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ClientController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (5/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/8)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package be.pxl.researchproject.controllers;
+&nbsp;
+&nbsp;import be.pxl.researchproject.api.request.ClientRequest;
+&nbsp;import be.pxl.researchproject.api.request.DeleteClientRequest;
+&nbsp;import be.pxl.researchproject.api.response.ClientDTO;
+&nbsp;import be.pxl.researchproject.domain.Client;
+&nbsp;import be.pxl.researchproject.service.ClientService;
+&nbsp;import org.antlr.v4.runtime.misc.NotNull;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.http.HttpStatus;
+&nbsp;import org.springframework.http.ResponseEntity;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;
+&nbsp;@RestController
+<b class="fc">&nbsp;public class ClientController {</b>
+&nbsp;    @Autowired
+&nbsp;    private ClientService clientService;
+&nbsp;
+&nbsp;    @GetMapping(&quot;/clients/search/{id}&quot;)
+&nbsp;    public ClientDTO getClientByFoalId(@PathVariable Long id){
+<b class="fc">&nbsp;        return clientService.findClientByFoalId(id);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @PostMapping(&quot;/clients/foal/{id}/add&quot;)
+&nbsp;    public ResponseEntity&lt;Client&gt; createClientForFoal(@PathVariable Long id, @RequestBody ClientRequest createClientRequest){
+<b class="fc">&nbsp;        Client client = clientService.addClient(id, createClientRequest);</b>
+<b class="fc">&nbsp;        return ResponseEntity.status(HttpStatus.CREATED).body(client);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @PutMapping(&quot;/clients/{id}/update&quot;)
+&nbsp;    public ResponseEntity&lt;Void&gt; updateClient(@PathVariable Long id, @RequestBody ClientRequest updateClientRequest){
+<b class="fc">&nbsp;        clientService.updateClient(id, updateClientRequest);</b>
+<b class="fc">&nbsp;        return ResponseEntity.noContent().build();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @DeleteMapping(&quot;/clients/{id}/delete&quot;)
+&nbsp;    public ResponseEntity&lt;Void&gt; deleteClient(@PathVariable Long id, @RequestBody DeleteClientRequest deleteClientRequest){
+<b class="fc">&nbsp;        clientService.deleteClientById(id, deleteClientRequest);</b>
+<b class="fc">&nbsp;        return ResponseEntity.noContent().build();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-05-20 22:56</div>
+</div>
+</body>
+</html>

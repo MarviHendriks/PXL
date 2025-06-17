@@ -1,0 +1,236 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > StallionService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">be.pxl.researchproject.service</a>
+</div>
+
+<h1>Coverage Summary for Class: StallionService (be.pxl.researchproject.service)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">StallionService</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    83,3%
+  </span>
+  <span class="absValue">
+    (10/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    92,9%
+  </span>
+  <span class="absValue">
+    (13/14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    92,7%
+  </span>
+  <span class="absValue">
+    (38/41)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package be.pxl.researchproject.service;
+&nbsp;
+&nbsp;import be.pxl.researchproject.exceptions.InvalidStallionCreatingException;
+&nbsp;import be.pxl.researchproject.exceptions.StallionNotFoundException;
+&nbsp;import be.pxl.researchproject.api.request.CreateStallionRequest;
+&nbsp;import be.pxl.researchproject.api.request.UpdateStallionRequest;
+&nbsp;import be.pxl.researchproject.api.response.StallionDTO;
+&nbsp;import be.pxl.researchproject.domain.Mare;
+&nbsp;import be.pxl.researchproject.domain.Stallion;
+&nbsp;import be.pxl.researchproject.repository.StallionRepository;
+&nbsp;import org.antlr.v4.runtime.misc.NotNull;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;import org.springframework.web.multipart.MultipartFile;
+&nbsp;
+&nbsp;import javax.swing.text.html.Option;
+&nbsp;import java.io.IOException;
+&nbsp;import java.time.LocalDate;
+&nbsp;import java.time.format.DateTimeFormatter;
+&nbsp;import java.util.HashMap;
+&nbsp;import java.util.List;
+<b class="fc">&nbsp;import java.util.Map;</b>
+&nbsp;import java.util.Optional;
+&nbsp;import java.util.stream.Collectors;
+&nbsp;
+&nbsp;@Service
+<b class="fc">&nbsp;public class StallionService {</b>
+<b class="fc">&nbsp;    @Autowired</b>
+<b class="fc">&nbsp;    private StallionRepository stallionRepository;</b>
+&nbsp;
+&nbsp;    public List&lt;StallionDTO&gt; findAllStallions(){
+&nbsp;        return stallionRepository.findAll().stream().map(stallion -&gt; {
+<b class="fc">&nbsp;            return new StallionDTO(stallion.getId(), stallion.getName(), stallion.getDateOfBirth(), stallion.getHeight(), stallion.getGender(), stallion.getColorCode());</b>
+<b class="fc">&nbsp;        }).toList();</b>
+<b class="fc">&nbsp;    }</b>
+<b class="fc">&nbsp;</b>
+<b class="fc">&nbsp;    public Stallion createStallion(CreateStallionRequest request){</b>
+<b class="pc">&nbsp;        Optional&lt;Stallion&gt; result = stallionRepository.findByName(request.name());</b>
+<b class="fc">&nbsp;        if (result.isPresent()){</b>
+<b class="fc">&nbsp;            throw new InvalidStallionCreatingException(&quot;Stallion already exists&quot;);</b>
+&nbsp;        } else if (request.name() == null ||
+<b class="fc">&nbsp;        request.height() == 0 ||</b>
+<b class="fc">&nbsp;        request.dateOfBirth() == null ||</b>
+<b class="fc">&nbsp;        request.colorCode() == null) {</b>
+&nbsp;            throw new InvalidStallionCreatingException(&quot;Alle velden moeten ingevuld zijn&quot;);
+&nbsp;        } else {
+&nbsp;            LocalDate dateOfBirth = LocalDate.parse(request.dateOfBirth());
+<b class="fc">&nbsp;            Stallion stallion = new Stallion(request.name(), dateOfBirth, request.height(), &quot;Stallion&quot; ,request.colorCode());</b>
+&nbsp;            return stallionRepository.save(stallion);
+&nbsp;        }
+&nbsp;    }
+<b class="nc">&nbsp;    public void deleteStallionById(Long id){</b>
+<b class="nc">&nbsp;        stallionRepository.deleteById(id);</b>
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+&nbsp;    public List&lt;StallionDTO&gt; findAllStallionsByName(String name){
+&nbsp;        return stallionRepository.findByNameStartingWith(name).stream().map(stallion -&gt; {
+<b class="fc">&nbsp;            return new StallionDTO(stallion.getId(), stallion.getName(), stallion.getDateOfBirth(), stallion.getHeight(), stallion.getGender(),stallion.getColorCode());</b>
+<b class="fc">&nbsp;        }).toList();</b>
+<b class="fc">&nbsp;    }</b>
+<b class="fc">&nbsp;</b>
+&nbsp;    public StallionDTO findStallionById(long id){
+<b class="fc">&nbsp;        Optional&lt;Stallion&gt; result = stallionRepository.findById(id);</b>
+&nbsp;        if (result.isPresent()){
+&nbsp;            Stallion stallion = result.get();
+&nbsp;            return new StallionDTO(stallion.getId(), stallion.getName(), stallion.getDateOfBirth(), stallion.getHeight(), stallion.getGender(), stallion.getColorCode());
+&nbsp;        } else {
+<b class="fc">&nbsp;            throw new StallionNotFoundException(&quot;De hengst is niet gevonden.&quot;);</b>
+<b class="fc">&nbsp;        }</b>
+<b class="fc">&nbsp;    }</b>
+<b class="fc">&nbsp;</b>
+<b class="fc">&nbsp;    public void updateStallion(long mareId, UpdateStallionRequest request) {</b>
+<b class="fc">&nbsp;        Optional&lt;Stallion&gt; optionalStallion = stallionRepository.findById(mareId);</b>
+<b class="fc">&nbsp;        if (optionalStallion.isPresent()) {</b>
+<b class="fc">&nbsp;            Stallion stallion = optionalStallion.get();</b>
+<b class="fc">&nbsp;            stallion.setName(request.getName());</b>
+&nbsp;            stallion.setGender(request.getGender());
+<b class="fc">&nbsp;            stallion.setDateOfBirth(request.getDateOfBirth());</b>
+&nbsp;            stallion.setHeight(request.getHeight());
+&nbsp;            stallion.setColorCode(request.getColorCode());
+&nbsp;            stallionRepository.save(stallion);
+<b class="fc">&nbsp;        } else {</b>
+<b class="fc">&nbsp;            throw new StallionNotFoundException(&quot;De hengst is niet gevonden&quot;);</b>
+<b class="fc">&nbsp;        }</b>
+<b class="fc">&nbsp;    }</b>
+&nbsp;    public Map&lt;String, List&lt;StallionDTO&gt;&gt; filterStallions(String colorCode) {
+&nbsp;        List&lt;StallionDTO&gt; stallionDTOs =  stallionRepository.findBycolorCodeStartingWith(colorCode).stream().map(stallion -&gt; {
+&nbsp;            return new StallionDTO(stallion.getId(), stallion.getName(), stallion.getDateOfBirth(), stallion.getHeight(), stallion.getGender(), stallion.getColorCode());
+<b class="fc">&nbsp;        }).toList();</b>
+<b class="fc">&nbsp;        return getStringListMap(stallionDTOs);</b>
+<b class="fc">&nbsp;    }</b>
+&nbsp;    @NotNull
+&nbsp;    private Map&lt;String, List&lt;StallionDTO&gt;&gt; getStringListMap(List&lt;StallionDTO&gt; stallionDTOS) {
+&nbsp;        Map&lt;String, List&lt;StallionDTO&gt;&gt; result = new HashMap&lt;&gt;();
+&nbsp;        result.put(&quot;stallions&quot;, stallionDTOS.stream().map(dto -&gt; (StallionDTO) dto).collect(Collectors.toList()));
+&nbsp;        return result;
+&nbsp;    }
+&nbsp;
+&nbsp;    //PDF
+&nbsp;    public void uploadPDF(Long id, MultipartFile file) throws IOException {
+&nbsp;        Optional&lt;Stallion&gt; stallionOptional = stallionRepository.findById(id);
+&nbsp;        if (stallionOptional.isPresent()){
+&nbsp;            Stallion stallion = stallionOptional.get();
+&nbsp;            stallion.setPdfFile(file.getBytes());
+&nbsp;            stallionRepository.save(stallion);
+&nbsp;        } else {
+&nbsp;            throw new StallionNotFoundException(&quot;De hengst is niet gevonden.&quot;);
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    public byte[] getPDF(Long id){
+&nbsp;        Optional&lt;Stallion&gt; stallionOptional = stallionRepository.findById(id);
+&nbsp;        if (stallionOptional.isPresent() &amp;&amp; stallionOptional.get().getPdfFile() != null){
+&nbsp;            return stallionOptional.get().getPdfFile();
+&nbsp;        } else {
+&nbsp;            throw new StallionNotFoundException(&quot;De hengst is niet gevonden.&quot;);
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-05-20 22:56</div>
+</div>
+</body>
+</html>

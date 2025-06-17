@@ -1,0 +1,244 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > MareController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">be.pxl.researchproject.controllers</a>
+</div>
+
+<h1>Coverage Summary for Class: MareController (be.pxl.researchproject.controllers)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">MareController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    90,5%
+  </span>
+  <span class="absValue">
+    (19/21)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    79,4%
+  </span>
+  <span class="absValue">
+    (27/34)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package be.pxl.researchproject.controllers;
+&nbsp;
+&nbsp;import be.pxl.researchproject.api.request.*;
+&nbsp;import be.pxl.researchproject.api.response.CoveringDTO;
+&nbsp;import be.pxl.researchproject.api.response.DiaryDTO;
+&nbsp;import be.pxl.researchproject.api.response.HorseDTO;
+&nbsp;import be.pxl.researchproject.api.response.MareDTO;
+&nbsp;import be.pxl.researchproject.domain.Covering;
+&nbsp;import be.pxl.researchproject.domain.DiaryEntry;
+&nbsp;import be.pxl.researchproject.domain.Mare;
+&nbsp;import be.pxl.researchproject.service.MareService;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.http.HttpStatus;
+&nbsp;import org.springframework.http.ResponseEntity;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;import org.springframework.web.multipart.MultipartFile;
+&nbsp;
+&nbsp;import java.io.IOException;
+&nbsp;import java.time.LocalDate;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Map;
+&nbsp;import java.util.Optional;
+&nbsp;
+&nbsp;@RestController
+<b class="fc">&nbsp;public class MareController {</b>
+&nbsp;    @Autowired
+&nbsp;    private MareService mareService;
+&nbsp;    @GetMapping(&quot;/mares&quot;)
+&nbsp;    public List&lt;MareDTO&gt; getAllMares(){
+<b class="fc">&nbsp;        return mareService.findAllMares();</b>
+&nbsp;    }
+&nbsp;    @GetMapping(&quot;/mares/search/{id}&quot;)
+&nbsp;    public MareDTO getMareById(@PathVariable Long id){
+<b class="fc">&nbsp;        return mareService.findMareById(id);</b>
+&nbsp;    }
+&nbsp;    @GetMapping(&quot;/mares/search&quot;)
+&nbsp;    public List&lt;MareDTO&gt; getAllMaresByName(@RequestParam(&quot;name&quot;) String name){
+<b class="fc">&nbsp;        return mareService.findAllMaresByName(name);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @PostMapping(&quot;/mares/add&quot;)
+&nbsp;    public ResponseEntity&lt;Mare&gt; createMare(@RequestBody CreateMareRequest request){
+<b class="fc">&nbsp;        Mare mare = mareService.createMare(request);</b>
+<b class="fc">&nbsp;        return ResponseEntity.status(HttpStatus.CREATED).body(mare);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/mares/name&quot;)
+&nbsp;    public String horse(){
+<b class="fc">&nbsp;        return &quot;horse&quot;;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @DeleteMapping(&quot;/mares/{id}&quot;)
+&nbsp;    public ResponseEntity&lt;?&gt; deleteMare(@PathVariable Long id) {
+<b class="fc">&nbsp;        mareService.deleteMareById(id);</b>
+<b class="fc">&nbsp;        return ResponseEntity.noContent().build();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @PostMapping(&quot;/mares/{id}/diary/add&quot;)
+&nbsp;    public ResponseEntity&lt;DiaryEntry&gt; addEntryToDiary(@PathVariable(&quot;id&quot;) long id,
+&nbsp;                                                      @RequestBody CreateDiaryEntryRequest request){
+<b class="fc">&nbsp;        return ResponseEntity.status(HttpStatus.CREATED).body(mareService.addEntryToDiary(id, request));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/mares/{id}/diary&quot;)
+&nbsp;    public ResponseEntity&lt;List&lt;DiaryDTO&gt;&gt; getMareDiary(@PathVariable(&quot;id&quot;) long id) {
+<b class="fc">&nbsp;        return ResponseEntity.ok(mareService.getAllDiaryEntries(id));</b>
+&nbsp;    }
+&nbsp;    @PutMapping(&quot;/mares/diary/{id}/update&quot;)
+&nbsp;    public ResponseEntity&lt;Void&gt; updateMareDiary(@PathVariable(&quot;id&quot;) long id, @RequestBody UpdateMareDiaryRequest request) {
+<b class="fc">&nbsp;        mareService.updateDiary(id, request);</b>
+<b class="fc">&nbsp;        return ResponseEntity.noContent().build();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @DeleteMapping(&quot;/mares/diary/{id}/delete&quot;)
+&nbsp;    public ResponseEntity&lt;Void&gt; deleteDiaryEntry(@PathVariable(&quot;id&quot;) long id){
+<b class="fc">&nbsp;        mareService.deleteDiaryEntry(id);</b>
+<b class="fc">&nbsp;        return ResponseEntity.noContent().build();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @PutMapping(&quot;/mares/coverDates/{id}/update&quot;)
+&nbsp;    public ResponseEntity updateMareCoverDates(@PathVariable(&quot;id&quot;) long id, @RequestBody UpdateMareCoverdateRequest request) {
+<b class="fc">&nbsp;        mareService.updateCoverings(id, request);</b>
+<b class="fc">&nbsp;        return ResponseEntity.noContent().build();</b>
+&nbsp;    }
+&nbsp;    @PostMapping(&quot;/mares/{id}/coverDates/add&quot;)
+&nbsp;    public ResponseEntity&lt;Covering&gt; addEntryToCoverDates(@PathVariable(&quot;id&quot;) long id,
+&nbsp;                                                         @RequestBody CreateCoverdateRequest request){
+<b class="fc">&nbsp;        return ResponseEntity.status(HttpStatus.CREATED).body(mareService.addCovering(id, request));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/mares/{id}/coverDates&quot;)
+&nbsp;    public ResponseEntity&lt;List&lt;CoveringDTO&gt;&gt; getMareCoverDates(@PathVariable(&quot;id&quot;) long id) {
+<b class="fc">&nbsp;        mareService.getAllCoverings(id);</b>
+<b class="fc">&nbsp;        return ResponseEntity.ok(mareService.getAllCoverings(id));</b>
+&nbsp;    }
+&nbsp;    @DeleteMapping(&quot;/mares/coverDates/{id}/delete&quot;)
+&nbsp;    public ResponseEntity&lt;Void&gt; deleteCoverdate(@PathVariable(&quot;id&quot;) long id){
+<b class="fc">&nbsp;        mareService.deleteCoverdate(id);</b>
+<b class="fc">&nbsp;        return ResponseEntity.noContent().build();</b>
+&nbsp;    }
+&nbsp;    @PutMapping(&quot;/mares/change/{id}&quot;)
+&nbsp;    public ResponseEntity&lt;Void&gt; updateMare(@PathVariable(&quot;id&quot;) long id, @RequestBody UpdateMareRequest request) {
+<b class="fc">&nbsp;        mareService.updateMare(id, request);</b>
+<b class="fc">&nbsp;        return ResponseEntity.noContent().build();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/mares/{id}/foals&quot;)
+&nbsp;    public  ResponseEntity&lt;Integer&gt; getAmountOfFoals(@PathVariable Long id){
+<b class="fc">&nbsp;        return ResponseEntity.ok(mareService.amountOfFoals(id));</b>
+&nbsp;    }
+&nbsp;    @GetMapping(&quot;/mares/filter&quot;)
+&nbsp;    public Map&lt;String, List&lt;MareDTO&gt;&gt; filterMares(@RequestParam(&quot;isPregnant&quot;) String isPregnant, @RequestParam(&quot;dueDateFrom&quot;) String dueDateFrom, @RequestParam(&quot;dueDateTo&quot;) String dueDateTo) {
+<b class="fc">&nbsp;        return mareService.filterMares(isPregnant, dueDateFrom, dueDateTo);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/mares/{id}/coverings&quot;)
+&nbsp;    public  ResponseEntity&lt;Integer&gt; getAmountOfCoverings(@PathVariable Long id){
+<b class="fc">&nbsp;        return ResponseEntity.ok(mareService.amountOfCoverings(id));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //PDF
+&nbsp;    @PostMapping(&quot;/mares/{id}/pdf&quot;)
+&nbsp;    public ResponseEntity&lt;String&gt; uploadPDF(@PathVariable Long id, @RequestParam(&quot;file&quot;) MultipartFile file){
+&nbsp;        try {
+<b class="nc">&nbsp;            mareService.uploadPDF(id, file);</b>
+<b class="nc">&nbsp;            return new ResponseEntity&lt;&gt;(&quot;File successvol geupload&quot;, HttpStatus.OK);</b>
+<b class="nc">&nbsp;        } catch (IOException e){</b>
+<b class="nc">&nbsp;            return new ResponseEntity&lt;&gt;(&quot;File upload gefaald&quot;, HttpStatus.INTERNAL_SERVER_ERROR);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/mares/{id}/pdf&quot;)
+&nbsp;    public ResponseEntity&lt;byte[]&gt; getPDF(@PathVariable Long id){
+<b class="nc">&nbsp;        return ResponseEntity.ok()</b>
+<b class="nc">&nbsp;                .header(&quot;Content-Type&quot;, &quot;application/pdf&quot;)</b>
+<b class="nc">&nbsp;                .body(mareService.getPDF(id));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-05-20 22:56</div>
+</div>
+</body>
+</html>

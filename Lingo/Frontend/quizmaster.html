@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>quizmaster</title>
+		<link rel="stylesheet" href="./style/quizmaster.css" />
+		<script src="./js/quizmaster.js" defer></script>
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Barlow&display=swap" rel="stylesheet">
+	</head>
+	<body>
+		<h1>Welcome quizmaster!</h1>
+		<h2>Here is a list of registered players, feel free to filter.</h2>
+		<h2>Create a game if you have selected 2 players.</h2>
+		<div id="body">
+			<input id="userSearch" type="text" />
+			<button id="filterButton">Search Player</button>
+			<button id="clearButton">Clear</button>
+			<br />
+			<div id="vs">
+				<h2 id="player1"></h2>
+				<h2 id="player2"></h2>
+			</div>
+
+			<div id="play">
+				<button id="startGame">Start game</button>
+				<button id="resetPlayers">Reset players</button>
+			</div>
+			<span id="createdGame"></span>
+			<span id="error"></span>
+			<br />
+			<table id="playerList"></table>
+		</div>
+		<br /><br /><br /><br /><br /><br /><br /><br /><br /><BR><BR><BR></BR></BR></BR>
+		<br><br><br><br><br><br>
+	</body>
+</html>

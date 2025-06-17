@@ -1,0 +1,173 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > Notification</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">be.pxl.researchproject.domain</a>
+</div>
+
+<h1>Coverage Summary for Class: Notification (be.pxl.researchproject.domain)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Notification</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (12/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (12/12)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package be.pxl.researchproject.domain;
+&nbsp;
+&nbsp;import jakarta.persistence.*;
+&nbsp;
+&nbsp;import java.time.LocalDate;
+&nbsp;
+&nbsp;@Entity
+<b class="fc">&nbsp;public class Notification {</b>
+&nbsp;    @Id
+&nbsp;    @GeneratedValue
+&nbsp;    private Long id;
+&nbsp;    private String title;
+&nbsp;
+&nbsp;    private boolean unread;
+&nbsp;
+&nbsp;    private LocalDate date;
+&nbsp;
+&nbsp;    @OneToOne(cascade = CascadeType.MERGE)
+&nbsp;    @JoinColumn(name = &quot;mare_id3&quot;)
+&nbsp;    private Mare mare;
+&nbsp;
+&nbsp;    @OneToOne(cascade = CascadeType.MERGE)
+&nbsp;    @JoinColumn(name = &quot;foal_id3&quot;)
+&nbsp;    private Foal foal;
+&nbsp;
+&nbsp;    public String getTitle() {
+<b class="fc">&nbsp;        return title;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setTitle(String title) {
+<b class="fc">&nbsp;        this.title = title;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public boolean isUnread() {
+<b class="fc">&nbsp;        return unread;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setUnread(boolean unread) {
+<b class="fc">&nbsp;        this.unread = unread;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public LocalDate getDate() {
+<b class="fc">&nbsp;        return date;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setDate(LocalDate date) {
+<b class="fc">&nbsp;        this.date = date;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Mare getMare() {
+<b class="fc">&nbsp;        return mare;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setMare(Mare mare) {
+<b class="fc">&nbsp;        this.mare = mare;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Foal getFoal() {
+<b class="fc">&nbsp;        return foal;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setFoal(Foal foal) {
+<b class="fc">&nbsp;        this.foal = foal;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Long getId() {
+<b class="fc">&nbsp;        return id;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-05-20 22:56</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,418 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > MareService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">be.pxl.researchproject.service</a>
+</div>
+
+<h1>Coverage Summary for Class: MareService (be.pxl.researchproject.service)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">MareService</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    92,6%
+  </span>
+  <span class="absValue">
+    (25/27)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    26%
+  </span>
+  <span class="absValue">
+    (40/154)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    58,8%
+  </span>
+  <span class="absValue">
+    (133/226)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package be.pxl.researchproject.service;
+&nbsp;
+&nbsp;import be.pxl.researchproject.exceptions.InvalidMareCreatingException;
+&nbsp;import be.pxl.researchproject.exceptions.MareNotFoundException;
+&nbsp;import be.pxl.researchproject.api.request.*;
+&nbsp;import be.pxl.researchproject.api.response.DiaryDTO;
+&nbsp;import be.pxl.researchproject.api.response.MareDTO;
+&nbsp;import be.pxl.researchproject.api.response.*;
+&nbsp;import be.pxl.researchproject.domain.Covering;
+&nbsp;import be.pxl.researchproject.domain.DiaryEntry;
+&nbsp;import be.pxl.researchproject.domain.Mare;
+&nbsp;import be.pxl.researchproject.repository.CoveringRepository;
+&nbsp;import be.pxl.researchproject.repository.DiaryRepository;
+&nbsp;import be.pxl.researchproject.repository.FoalRepository;
+&nbsp;import be.pxl.researchproject.repository.MareRepository;
+&nbsp;import org.antlr.v4.runtime.misc.NotNull;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;import org.springframework.transaction.annotation.Transactional;
+&nbsp;import org.springframework.web.multipart.MultipartFile;
+&nbsp;
+&nbsp;import java.io.IOException;
+&nbsp;import java.time.LocalDate;
+&nbsp;import java.time.LocalDateTime;
+&nbsp;import java.time.format.DateTimeFormatter;
+&nbsp;import java.time.temporal.ChronoUnit;
+&nbsp;import java.util.*;
+&nbsp;import java.util.stream.Collectors;
+<b class="fc">&nbsp;</b>
+&nbsp;@Service
+<b class="fc">&nbsp;public class MareService {</b>
+&nbsp;    @Autowired
+&nbsp;    private MareRepository mareRepository;
+&nbsp;    @Autowired
+&nbsp;    private DiaryRepository diaryRepository;
+&nbsp;    @Autowired
+&nbsp;    private FoalRepository foalRepository;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private CoveringRepository coveringRepository;
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;    public List&lt;MareDTO&gt; findAllMares() {</b>
+<b class="fc">&nbsp;        return mareRepository.findAll().stream().map(mare -&gt; {</b>
+<b class="fc">&nbsp;            mare.setDaysUntilDueDate(calculateDaysUntilExpectedDelivery(mare.getDueDate()));</b>
+<b class="fc">&nbsp;            mare.setDaysPregnant(getDaysPregnant(mare.getDaysUntilDueDate()));</b>
+<b class="fc">&nbsp;            mareRepository.save(mare);</b>
+<b class="fc">&nbsp;            return new MareDTO(mare.getId(), mare.getName(), mare.getHeight(), mare.getDateOfBirth(), mare.getGender(), mare.getDaysPregnant(), mare.getDueDate(), mare.getDaysUntilDueDate(), mare.getDiary(), mare.isPregnant());</b>
+<b class="fc">&nbsp;        }).toList();</b>
+&nbsp;    }
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;    public List&lt;MareDTO&gt; findAllMaresByName(String name) {</b>
+<b class="fc">&nbsp;        return mareRepository.findByNameStartingWith(name).stream().map(mare -&gt; {</b>
+<b class="fc">&nbsp;            mare.setDaysUntilDueDate(calculateDaysUntilExpectedDelivery(mare.getDueDate()));</b>
+<b class="fc">&nbsp;            mare.setDaysPregnant(getDaysPregnant(mare.getDaysUntilDueDate()));</b>
+<b class="fc">&nbsp;            return new MareDTO(mare.getId(), mare.getName(), mare.getHeight(), mare.getDateOfBirth(), mare.getGender(), mare.getDaysPregnant(), mare.getDueDate(), mare.getDaysUntilDueDate(), mare.getDiary(), mare.isPregnant());</b>
+<b class="fc">&nbsp;        }).toList();</b>
+&nbsp;    }
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;    public MareDTO findMareById(long id) {</b>
+<b class="fc">&nbsp;        Optional&lt;Mare&gt; result = mareRepository.findById(id);</b>
+<b class="fc">&nbsp;        if (result.isPresent()) {</b>
+<b class="fc">&nbsp;            Mare mare = result.get();</b>
+<b class="fc">&nbsp;            mare.setDaysUntilDueDate(calculateDaysUntilExpectedDelivery(mare.getDueDate()));</b>
+<b class="fc">&nbsp;            mare.setDaysPregnant(getDaysPregnant(mare.getDaysUntilDueDate()));</b>
+<b class="fc">&nbsp;            return new MareDTO(mare.getId(), mare.getName(), mare.getHeight(), mare.getDateOfBirth(), mare.getGender(), mare.getDaysPregnant(), mare.getDueDate(), mare.getDaysUntilDueDate(), mare.getDiary(), mare.isPregnant());</b>
+&nbsp;        } else {
+<b class="fc">&nbsp;            throw new MareNotFoundException(&quot;De merrie is niet gevonden&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;    public Mare createMare(CreateMareRequest request) {</b>
+<b class="fc">&nbsp;        Optional&lt;Mare&gt; result = mareRepository.findByName(request.name());</b>
+<b class="fc">&nbsp;        if (result.isPresent()) {</b>
+<b class="fc">&nbsp;            throw new InvalidMareCreatingException(&quot;Mare already exists&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+<b class="fc">&nbsp;        LocalDate dueDate = null;</b>
+<b class="pc">&nbsp;        if (request.dueDate() != null) {</b>
+<b class="nc">&nbsp;            dueDate = LocalDate.parse(request.dueDate());</b>
+<b class="nc">&nbsp;        }</b>
+<b class="fc">&nbsp;        LocalDate dateOfBirth = null;</b>
+<b class="pc">&nbsp;        if (request.dateOfBirth() != null) {</b>
+<b class="fc">&nbsp;            dateOfBirth = LocalDate.parse(request.dateOfBirth());</b>
+<b class="nc">&nbsp;        }</b>
+<b class="fc">&nbsp;        Mare mare = new Mare(request.name(), dateOfBirth, request.height(), &quot;Mare&quot;);</b>
+<b class="fc">&nbsp;        mare.setDaysUntilDueDate(calculateDaysUntilExpectedDelivery(dueDate));</b>
+<b class="fc">&nbsp;        mare.setDaysPregnant(getDaysPregnant(mare.getDaysUntilDueDate()));</b>
+<b class="fc">&nbsp;        return mareRepository.save(mare);</b>
+&nbsp;    }
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;    public Integer calculateDaysUntilExpectedDelivery(LocalDate dueDate) {</b>
+<b class="fc">&nbsp;        if (dueDate != null) {</b>
+<b class="fc">&nbsp;            return (int) ChronoUnit.DAYS.between(LocalDate.now(), dueDate);</b>
+&nbsp;        } else {
+<b class="fc">&nbsp;            return null;</b>
+&nbsp;        }
+&nbsp;    }
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;    public Integer getDaysPregnant(Integer dueDate) {</b>
+<b class="fc">&nbsp;        if (dueDate != null) {</b>
+<b class="fc">&nbsp;            return 340 - dueDate;</b>
+&nbsp;        } else {
+<b class="fc">&nbsp;            return null;</b>
+&nbsp;        }
+&nbsp;    }
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;    public LocalDate calculateDueDate(Mare mare) {</b>
+<b class="pc">&nbsp;        if (mare.getDueDate() == null) {</b>
+<b class="fc">&nbsp;            return mare.getCoverings().stream()</b>
+<b class="fc">&nbsp;                    .sorted((w1, w2) -&gt; w1.compareTo(w2))</b>
+<b class="fc">&nbsp;                    .toList()</b>
+<b class="fc">&nbsp;                    .getFirst().getCoverDate().plusDays(340);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return mare.getDueDate();</b>
+&nbsp;    }
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;    @Transactional</b>
+<b class="nc">&nbsp;    public DiaryEntry addEntryToDiary(Long id, CreateDiaryEntryRequest request) {</b>
+<b class="fc">&nbsp;        Optional&lt;Mare&gt; result = mareRepository.findById(id);</b>
+<b class="nc">&nbsp;</b>
+<b class="fc">&nbsp;        if (!result.isPresent()) {</b>
+<b class="fc">&nbsp;            throw new MareNotFoundException(&quot;De merrie is niet gevonden&quot;);</b>
+<b class="nc">&nbsp;        } else {</b>
+<b class="fc">&nbsp;            DiaryEntry entry = new DiaryEntry(request.entry(), LocalDateTime.now());</b>
+<b class="fc">&nbsp;            Mare mare = result.get();</b>
+<b class="fc">&nbsp;            mare.getDiary().add(entry);</b>
+&nbsp;
+<b class="fc">&nbsp;            diaryRepository.save(entry);</b>
+<b class="fc">&nbsp;            mareRepository.save(mare);</b>
+<b class="nc">&nbsp;</b>
+<b class="fc">&nbsp;            return diaryRepository.save(entry);</b>
+&nbsp;        }
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;    public List&lt;DiaryDTO&gt; getAllDiaryEntries(Long id) {</b>
+<b class="fc">&nbsp;        Optional&lt;Mare&gt; result = mareRepository.findById(id);</b>
+<b class="nc">&nbsp;</b>
+<b class="fc">&nbsp;        if (!result.isPresent()) {</b>
+<b class="fc">&nbsp;            throw new MareNotFoundException(&quot;De merrie is niet gevonden&quot;);</b>
+<b class="nc">&nbsp;        } else {</b>
+<b class="fc">&nbsp;            Mare mare = result.get();</b>
+<b class="fc">&nbsp;            return mare.getDiary().stream()</b>
+<b class="fc">&nbsp;                    .map(e -&gt; new DiaryDTO(e.getId(), e.getEntry(), e.getEntryDate())).toList();</b>
+&nbsp;        }
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+<b class="nc">&nbsp;    public void updateDiary(Long id, UpdateMareDiaryRequest request) {</b>
+<b class="fc">&nbsp;        Optional&lt;DiaryEntry&gt; result = diaryRepository.findById(id);</b>
+&nbsp;
+<b class="fc">&nbsp;        if (!result.isPresent()) {</b>
+<b class="fc">&nbsp;            throw new MareNotFoundException(&quot;Entry not found&quot;);</b>
+<b class="nc">&nbsp;        } else {</b>
+<b class="fc">&nbsp;            DiaryEntry entry = result.get();</b>
+<b class="fc">&nbsp;            entry.setEntry(request.entry());</b>
+<b class="fc">&nbsp;            diaryRepository.save(entry);</b>
+&nbsp;        }
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+<b class="nc">&nbsp;    public void deleteDiaryEntry(Long id) {</b>
+<b class="fc">&nbsp;        diaryRepository.deleteById(id);</b>
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;    public void deleteCoverdate(Long id){</b>
+<b class="fc">&nbsp;        coveringRepository.deleteById(id);</b>
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+&nbsp;    public void deleteMareById(Long id){
+<b class="fc">&nbsp;        mareRepository.deleteById(id);</b>
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;    public void updateMare(long mareId, UpdateMareRequest request) {</b>
+<b class="fc">&nbsp;        Optional&lt;Mare&gt; optionalMare = mareRepository.findById(mareId);</b>
+<b class="fc">&nbsp;        if (optionalMare.isPresent()) {</b>
+<b class="fc">&nbsp;            Mare mare = optionalMare.get();</b>
+<b class="pc">&nbsp;            mare.setName(request.name());</b>
+<b class="fc">&nbsp;            mare.setGender(request.gender());</b>
+<b class="pc">&nbsp;            mare.setPregnant(request.isPregnant());</b>
+<b class="pc">&nbsp;            if (request.isPregnant()) {</b>
+<b class="nc">&nbsp;                mare.setDueDate(calculateDueDate(mare));</b>
+<b class="nc">&nbsp;            } else {</b>
+<b class="pc">&nbsp;                mare.setDueDate(null);</b>
+<b class="nc">&nbsp;            }</b>
+<b class="fc">&nbsp;            LocalDate dateOfBirth = null;</b>
+<b class="pc">&nbsp;            if (request.dateOfBirth() != null) {</b>
+<b class="pc">&nbsp;                dateOfBirth = LocalDate.parse(request.dateOfBirth());</b>
+<b class="nc">&nbsp;            }</b>
+<b class="pc">&nbsp;            mare.setDateOfBirth(dateOfBirth);</b>
+<b class="fc">&nbsp;            mare.setHeight(request.height());</b>
+<b class="fc">&nbsp;            mareRepository.save(mare);</b>
+<b class="nc">&nbsp;        } else {</b>
+<b class="fc">&nbsp;            throw new MareNotFoundException(&quot;De merrie is niet gevonden&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;    public List&lt;CoveringDTO&gt; getAllCoverings(Long id){</b>
+<b class="pc">&nbsp;        Optional&lt;Mare&gt; result = mareRepository.findById(id);</b>
+<b class="nc">&nbsp;</b>
+<b class="fc">&nbsp;        if (!result.isPresent()){</b>
+<b class="fc">&nbsp;            throw new MareNotFoundException(&quot;De merrie is niet gevonden&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        else {</b>
+<b class="fc">&nbsp;            Mare mare = result.get();</b>
+<b class="fc">&nbsp;            return mare.getCoverings().stream()</b>
+<b class="fc">&nbsp;                    .sorted((w1, w2) -&gt; w1.compareTo(w2))</b>
+<b class="fc">&nbsp;                    .map(e -&gt; new CoveringDTO(e.getId(), e.getCoverDate()))</b>
+<b class="fc">&nbsp;                    .toList();</b>
+<b class="pc">&nbsp;        }</b>
+<b class="nc">&nbsp;    }</b>
+&nbsp;    public Covering addCovering(Long id, CreateCoverdateRequest request){
+<b class="pc">&nbsp;        Optional&lt;Mare&gt; result = mareRepository.findById(id);</b>
+<b class="fc">&nbsp;        Covering response = null;</b>
+<b class="fc">&nbsp;</b>
+<b class="fc">&nbsp;        if (!result.isPresent()){</b>
+<b class="fc">&nbsp;            throw new MareNotFoundException(&quot;De merrie is niet gevonden&quot;);</b>
+<b class="fc">&nbsp;        }</b>
+<b class="nc">&nbsp;        else {</b>
+<b class="fc">&nbsp;            Mare mare = result.get();</b>
+<b class="nc">&nbsp;</b>
+<b class="fc">&nbsp;            if (mare.getDueDate() == null){</b>
+<b class="fc">&nbsp;                Covering covering = new Covering(LocalDate.parse(request.entry()));</b>
+<b class="fc">&nbsp;                mare.getCoverings().add(covering);</b>
+<b class="pc">&nbsp;                response = coveringRepository.save(covering);</b>
+<b class="fc">&nbsp;                mareRepository.save(mare);</b>
+&nbsp;            }
+<b class="nc">&nbsp;            else {</b>
+<b class="fc">&nbsp;                throw new InvalidMareCreatingException(&quot;Kan geen dekdatums toevoegen wanneer een merrie al zwanger is&quot;);</b>
+&nbsp;            }
+<b class="pc">&nbsp;            return response;</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;    public void updateCoverings(Long id, UpdateMareCoverdateRequest coverings){</b>
+<b class="fc">&nbsp;        Optional&lt;Covering&gt; result = coveringRepository.findById(id);</b>
+<b class="nc">&nbsp;</b>
+<b class="fc">&nbsp;        if (!result.isPresent()){</b>
+<b class="fc">&nbsp;            throw new MareNotFoundException(&quot;De merrie is niet gevonden&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        else {</b>
+<b class="fc">&nbsp;            Covering covering = result.get();</b>
+<b class="fc">&nbsp;            covering.setCoverDate(LocalDate.parse(coverings.entry()));</b>
+<b class="fc">&nbsp;            Covering response = coveringRepository.save(covering);</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;    public Map&lt;String, List&lt;MareDTO&gt;&gt; filterMares(String isPregnant, String dueDateFrom, String dueDateTo) {</b>
+<b class="pc">&nbsp;        LocalDate dueDateFromParsed = !dueDateFrom.equals(&quot;&quot;) ? LocalDate.parse(dueDateFrom, DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd&quot;)) : null;</b>
+<b class="pc">&nbsp;        LocalDate dueDateToParsed = !dueDateTo.equals(&quot;&quot;) ? LocalDate.parse(dueDateTo, DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd&quot;)) : null;</b>
+<b class="pc">&nbsp;        Boolean pregnant = !isPregnant.equals(&quot;&quot;) ? Boolean.parseBoolean(isPregnant) : null;</b>
+<b class="fc">&nbsp;        List&lt;MareDTO&gt; mareDTOs =  mareRepository.filterMares(pregnant, dueDateFromParsed, dueDateToParsed).stream().map(mare -&gt; {</b>
+<b class="fc">&nbsp;            mare.setDaysUntilDueDate(calculateDaysUntilExpectedDelivery(mare.getDueDate()));</b>
+<b class="fc">&nbsp;            mare.setDaysPregnant(getDaysPregnant(mare.getDaysUntilDueDate()));</b>
+<b class="fc">&nbsp;            return new MareDTO(mare.getId(), mare.getName(), mare.getHeight(), mare.getDateOfBirth(), mare.getGender(), mare.getDaysPregnant(), mare.getDueDate(), mare.getDaysUntilDueDate() , mare.getDiary() ,mare.isPregnant());</b>
+<b class="fc">&nbsp;        }).toList();</b>
+<b class="fc">&nbsp;        return getStringListMap(mareDTOs);</b>
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;    @NotNull</b>
+<b class="nc">&nbsp;    private Map&lt;String, List&lt;MareDTO&gt;&gt; getStringListMap(List&lt;MareDTO&gt; mareDTOs) {</b>
+<b class="pc">&nbsp;        Map&lt;String, List&lt;MareDTO&gt;&gt; result = new HashMap&lt;&gt;();</b>
+<b class="pc">&nbsp;        result.put(&quot;mares&quot;, mareDTOs.stream().map(dto -&gt; (MareDTO) dto).collect(Collectors.toList()));</b>
+<b class="pc">&nbsp;        return result;</b>
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;    public int amountOfFoals(Long id){</b>
+<b class="pc">&nbsp;        Optional&lt;Mare&gt; optionalMare = mareRepository.findById(id);</b>
+<b class="fc">&nbsp;        if (optionalMare.isPresent()) {</b>
+<b class="fc">&nbsp;            Mare mare = optionalMare.get();</b>
+<b class="pc">&nbsp;            return mare.getFoal() == null ? 0 : 1;</b>
+<b class="nc">&nbsp;        } else {</b>
+<b class="fc">&nbsp;            throw new MareNotFoundException(&quot;De merrie is niet gevonden&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;    public int amountOfCoverings(Long id){</b>
+<b class="pc">&nbsp;        Optional&lt;Mare&gt; optionalMare = mareRepository.findById(id);</b>
+<b class="fc">&nbsp;        if (optionalMare.isPresent()) {</b>
+<b class="pc">&nbsp;            Mare mare = optionalMare.get();</b>
+<b class="pc">&nbsp;            return mare.getCoverings().isEmpty() ? 0 : 1;</b>
+<b class="nc">&nbsp;        } else {</b>
+<b class="pc">&nbsp;            throw new MareNotFoundException(&quot;De merrie is niet gevonden&quot;);</b>
+&nbsp;        }
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+<b class="nc">&nbsp;    //PDF</b>
+<b class="nc">&nbsp;    public void uploadPDF(Long id, MultipartFile file) throws IOException {</b>
+<b class="nc">&nbsp;        Optional&lt;Mare&gt; mareOptional = mareRepository.findById(id);</b>
+<b class="nc">&nbsp;        if (mareOptional.isPresent()){</b>
+<b class="nc">&nbsp;            Mare mare = mareOptional.get();</b>
+<b class="nc">&nbsp;            mare.setPdfFile(file.getBytes());</b>
+<b class="nc">&nbsp;            mareRepository.save(mare);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            throw new MareNotFoundException(&quot;De merrie is niet gevonden.&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    public byte[] getPDF(Long id){
+<b class="nc">&nbsp;        Optional&lt;Mare&gt; mareOptional = mareRepository.findById(id);</b>
+<b class="nc">&nbsp;        if (mareOptional.isPresent() &amp;&amp; mareOptional.get().getPdfFile() != null){</b>
+<b class="nc">&nbsp;            return mareOptional.get().getPdfFile();</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            throw new MareNotFoundException(&quot;De merrie is niet gevonden.&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-05-20 22:56</div>
+</div>
+</body>
+</html>

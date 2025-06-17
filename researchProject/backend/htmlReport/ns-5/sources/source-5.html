@@ -1,0 +1,197 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > JwtService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">be.pxl.researchproject.service</a>
+</div>
+
+<h1>Coverage Summary for Class: JwtService (be.pxl.researchproject.service)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">JwtService</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    90,9%
+  </span>
+  <span class="absValue">
+    (10/11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    25%
+  </span>
+  <span class="absValue">
+    (1/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    62,5%
+  </span>
+  <span class="absValue">
+    (25/40)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package be.pxl.researchproject.service;
+&nbsp;
+&nbsp;import be.pxl.researchproject.api.response.UserDTO;
+&nbsp;import be.pxl.researchproject.domain.Roles;
+&nbsp;import be.pxl.researchproject.domain.User;
+&nbsp;import be.pxl.researchproject.repository.UserRepository;
+&nbsp;import io.jsonwebtoken.Claims;
+&nbsp;import io.jsonwebtoken.Jwts;
+&nbsp;import io.jsonwebtoken.io.Decoders;
+&nbsp;import io.jsonwebtoken.security.Keys;
+&nbsp;import org.springframework.security.core.userdetails.UserDetails;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;
+&nbsp;import javax.crypto.SecretKey;
+&nbsp;import java.util.Date;
+&nbsp;import java.util.function.Function;
+&nbsp;
+<b class="nc">&nbsp;@Service</b>
+<b class="fc">&nbsp;public class JwtService {</b>
+&nbsp;    private static final String SECRET_KEY = &quot;bc6adb28e3b059d0f4d0dc99586f85bc854a7bea5310f0ba41468fd63e00a247dbd218db63fecdab5255eb90a62d70e3fd4c869299f6079d0d75029e387b7ce6&quot;;
+&nbsp;
+<b class="nc">&nbsp;    public boolean isValid(String token, UserDetails user){</b>
+<b class="pc">&nbsp;        return !isTokenExpired(token) &amp;&amp; getUserEmail(token).equals(user.getUsername());</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    private boolean isTokenExpired(String token) {</b>
+<b class="fc">&nbsp;        return extractExperiation(token).before(new Date());</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    private Date extractExperiation(String token){</b>
+<b class="fc">&nbsp;        return extractClaim(token, Claims::getExpiration);</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    //even in comment voor testing</b>
+&nbsp;    /*public String getUserRole(String token){
+&nbsp;        return extractClaim(token, Claims::getSubject);
+&nbsp;    }*/
+<b class="nc">&nbsp;    public Roles getUserRole(String token) {</b>
+<b class="fc">&nbsp;        String roleString = extractClaim(token, Claims::getSubject);</b>
+<b class="fc">&nbsp;        return Roles.valueOf(roleString);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getUserEmail(String token){
+<b class="fc">&nbsp;        Claims claims = extractAllClaims(token);</b>
+<b class="fc">&nbsp;        return (String) claims.get(&quot;email&quot;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //haal een claim uit van een lijst van claims
+&nbsp;    public &lt;T&gt; T extractClaim(String token, Function&lt;Claims, T&gt; resolver){
+<b class="fc">&nbsp;        Claims claims = extractAllClaims(token);</b>
+<b class="fc">&nbsp;        return resolver.apply(claims);</b>
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;    //ontvang en lees alle properties in de token dus, user rol, datum van aanmaak, vervaldatum,...</b>
+<b class="nc">&nbsp;    private Claims extractAllClaims(String token){</b>
+&nbsp;        return Jwts
+<b class="fc">&nbsp;                .parser()</b>
+<b class="fc">&nbsp;                .verifyWith(getSignInKey())</b>
+<b class="fc">&nbsp;                .build()</b>
+<b class="fc">&nbsp;                .parseSignedClaims(token)</b>
+<b class="fc">&nbsp;                .getPayload();</b>
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;    //Genereer een jwt token die voor 7 dagen gelding blijft</b>
+<b class="nc">&nbsp;    public String generateToken(User user){</b>
+<b class="nc">&nbsp;        String token = Jwts</b>
+<b class="fc">&nbsp;                .builder()</b>
+<b class="fc">&nbsp;                .subject(user.getRole().toString())</b>
+<b class="fc">&nbsp;                .claim(&quot;email&quot;, user.getUsername())</b>
+<b class="fc">&nbsp;                .issuedAt(new Date(System.currentTimeMillis()))</b>
+<b class="fc">&nbsp;                .expiration(new Date(System.currentTimeMillis() + (7 * 24 * 60 * 60 * 1000)))</b>
+<b class="fc">&nbsp;                .signWith(getSignInKey())</b>
+<b class="fc">&nbsp;                .compact();</b>
+<b class="fc">&nbsp;        return token;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private SecretKey getSignInKey(){
+<b class="fc">&nbsp;        byte[] keyBytes = Decoders.BASE64URL.decode(SECRET_KEY);</b>
+<b class="fc">&nbsp;        return Keys.hmacShaKeyFor(keyBytes);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-05-20 22:56</div>
+</div>
+</body>
+</html>

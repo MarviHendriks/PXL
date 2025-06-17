@@ -1,0 +1,618 @@
+body {
+	background-image: url("../images/787863a56b90d5f42791890a53b368d7.jpg");
+	background-color: #1f2833;
+	font-family: "Barlow", sans-serif;
+	height: 1080px;
+}
+
+h1 {
+	text-align: center;
+	color: rgb(2, 59, 74);
+}
+
+#goodLuck {
+	margin-top: 80px;
+	padding-top: 30px;
+	padding-bottom: 20px;
+	color: #66fcf1;
+}
+
+button {
+	background-color: rgb(194, 191, 191);
+}
+
+input {
+	background-color: rgb(176, 175, 175);
+}
+
+#lingoWordPuzzle {
+	height: auto;
+	width: 600px;
+	background-color: white;
+	margin: 50px auto 50px auto;
+	padding: 0;
+}
+
+#userControls {
+	height: 50px;
+	width: 600px;
+	margin: 50px auto 50px auto;
+	padding: 0;
+}
+
+#userTurnInfo {
+	height: 50px;
+	width: 600px;
+	margin: 50px auto 50px auto;
+	padding: 0;
+	text-align: center;
+
+	color: rgb(243, 239, 239);
+	font-size: large;
+	font-weight: bold;
+}
+
+#userControls input {
+	margin-left: 40%;
+	margin-right: 40%;
+	margin-bottom: 5px;
+	width: 20%;
+}
+
+#userControls button {
+	margin-left: 40%;
+	margin-right: 39.5%;
+	margin-bottom: 5px;
+	width: 21%;
+}
+
+ul {
+	background-color: white;
+	height: auto;
+	width: 580px;
+	margin-top: 10px;
+	margin-left: 10px;
+	float: left;
+	padding: 0;
+	background-color: #c5c6c7;
+	background-color: white;
+	height: auto;
+	width: 580px;
+	margin-top: 10px;
+	margin-left: 10px;
+	float: left;
+	padding: 0;
+}
+
+#loser {
+	color: #66fcf1;
+}
+li {
+	list-style-type: none;
+	float: left;
+	font-size: xxx-large;
+	text-align: center;
+	background-color: #ffffff;
+	list-style-type: none;
+	float: left;
+	font-size: xxx-large;
+	text-align: center;
+}
+
+#wrong {
+	text-align: center;
+	font-weight: bold;
+	font-size: large;
+	color: rgb(246, 244, 244);
+	margin-top: 20px;
+	margin-bottom: -235px;
+
+	color: rgb(211, 206, 206);
+}
+
+#fixedLeft {
+	border-collapse: collapse;
+	border: 1px solid black;
+	position: absolute;
+	top: 30%;
+
+	left: 5%;
+	padding: 20px;
+}
+
+#fixedRight {
+	border-collapse: collapse;
+	border: 1px solid black;
+	position: absolute;
+	top: 10%;
+
+	left: 5%;
+	padding: 20px;
+}
+
+#fixedRight.td {
+	border: 1px solid black;
+}
+
+th {
+	text-align: center;
+	background-color: rgb(13, 69, 70);
+	border: 1px solid black;
+	color: rgb(211, 206, 206);
+}
+
+td {
+	border-collapse: collapse;
+	border: 1px solid black;
+	width: 125px;
+	background-color: rgb(8, 93, 94);
+	color: rgb(211, 206, 206);
+}
+
+td:nth-child(2) {
+	text-align: center;
+}
+
+.between {
+	background-color: rgba(40, 156, 195, 255);
+	border: 0px;
+}
+
+#puzzling {
+	margin-top: 250px;
+}
+
+#lingoCardNumber {
+	border-collapse: collapse;
+	border: 5px solid black;
+	background-color: rgb(8, 93, 94);
+
+	position: absolute;
+	top: 10%;
+
+	right: 5%;
+}
+
+#lingoCardNumber td {
+	border-collapse: collapse;
+}
+
+#lingoContainer {
+	position: absolute;
+	top: 7%;
+
+	left: 0;
+	right: 0;
+	border-radius: 5%;
+	margin: auto;
+	width: 600px;
+	height: 580px;
+	border: 2px solid black;
+	background-color: lightseagreen;
+	display: flex;
+	align-items: center;
+	text-align: center;
+	visibility: hidden;
+	border-collapse: collapse;
+
+}
+
+#lingoContainerText {
+	position: absolute;
+	top: 10%;
+
+	left: 0;
+	right: 0;
+
+	margin: auto;
+
+	color: white;
+	text-align: center;
+	font-size: 100px;
+	visibility: hidden;
+}
+
+#lingoContainerText1 {
+	position: absolute;
+	top: 45%;
+
+	left: 0;
+	right: 0;
+
+	margin: auto;
+
+	color: white;
+	text-align: center;
+	font-size: 25px;
+	visibility: hidden;
+}
+
+#closeButton2 {
+	position: absolute;
+	top: 60%;
+
+	left: 0;
+	right: 0;
+
+	margin: auto;
+	width: 200px;
+	height: 40px;
+	visibility: hidden;
+}
+
+#ballPitContainer {
+	position: absolute;
+	top: 7%;
+
+	left: 0;
+	right: 0;
+	border-radius: 5%;
+	margin: auto;
+	width: 600px;
+	height: 580px;
+	border: 2px solid black;
+	background-color: rgb(8, 93, 94);
+	display: flex;
+	align-items: center;
+	text-align: center;
+	visibility: hidden;
+	border-collapse: collapse;
+}
+
+#ballInfo {
+	border: 1px solid black;
+	position: absolute;
+	top: 30%;
+
+	left: 0;
+	right: 0;
+
+	margin: auto;
+	width: 190px;
+	height: 190px;
+	border-radius: 50%;
+	color: white;
+	vertical-align: center;
+	text-align: center;
+	font-size: 140px;
+	background-color: rgb(13, 69, 70);
+	border-collapse: collapse;
+	visibility: hidden;
+}
+
+#grabBallButton,
+#closeButton {
+	position: absolute;
+	bottom: 10%;
+	left: 29%;
+	width: 250px;
+	height: 50px;
+}
+
+#lingoCardNumber tr {
+	line-height: 60px;
+}
+
+#hasLingo {
+	position: absolute;
+	top: 5%;
+	left: 25%;
+	width: 300px;
+	height: 50px;
+	color: rgb(236, 236, 236);
+	font-size: 20px;
+	font-weight: bold;
+}
+
+
+#ballNumber {
+	margin: 0;
+	margin-top: 10.5px;
+}
+
+.numberCircle {
+	border: none;
+	border-radius: 50%;
+	width: 36px;
+	height: 30px;
+	padding: 8px;
+	background: #fff;
+	color: white;
+	text-align: center;
+	background-color: rgb(13, 69, 70);
+	font: 32px Arial, sans-serif;
+}
+
+span {
+	padding: 5px;
+}
+
+#returnButton {
+	position: absolute;
+	top: 30%;
+	left: 0;
+	right: 0;
+	margin: auto;
+	visibility: hidden;
+	width: 150px;
+	height: 50px;
+}
+
+.hr {
+	visibility: hidden;
+}
+
+#goodLuck {
+	margin-top: 0px;
+}
+
+@media screen and (max-width: 1380px) {
+	#goodLuck {
+		margin-top: 400px;
+	}
+
+	#returnButton {
+		margin-top: 350px;
+	}
+
+	#fixedRight {
+		border-collapse: collapse;
+		border: 1px solid black;
+		margin-left: auto;
+		margin-right: auto;
+		padding: 20px;
+		margin-top: 10px;
+	}
+
+	#fixedLeft {
+		margin-left: auto;
+		margin-right: auto;
+		border-collapse: collapse;
+		border: 1px solid black;
+		padding: 20px;
+	}
+}
+
+@media screen and (min-width: 600px) and (max-width: 700px) {
+	h1 {
+		margin-top: -60px;
+	}
+
+	#goodLuck {
+		margin-top: 450px;
+		margin-bottom: 65px;
+	}
+
+	#lingoCardNumber {
+		position: absolute;
+		margin-left: auto;
+		margin-right: auto;
+		left: 0;
+		right: 0;
+		top: 250px;
+	}
+
+	#fixedRight {
+		position: unset;
+		border-collapse: collapse;
+		border: 1px solid black;
+		margin-left: 10px;
+		padding: 20px;
+		margin-top: -170px;
+	}
+
+	#fixedLeft {
+		position: unset;
+		margin-right: 10px;
+
+		padding: 20px;
+		margin-top: 20px;
+	}
+
+	.hr {
+		visibility: hidden;
+	}
+
+	#hrke2 {
+		margin-top: -120px;
+	}
+
+	#wrong {
+		margin-top: 70px;
+	}
+
+	#returnButton {
+		margin-top: 500px;
+	}
+
+	#ballPitContainer {
+		width: 80%;
+	}
+
+	#grabBallButton,
+	#closeButton {
+		width: calc(100% / 3);
+		margin-left: calc(100% / 18);
+	}
+
+	#hasLingo {
+		width: calc(100% / 2);
+		margin-left: 1%;
+		float: left;
+		display: block;
+	}
+
+	#ballPitContainer {
+		display: inline;
+	}
+	h1 {
+		margin-top: -60px;
+	}
+
+	#goodLuck {
+		margin-top: 450px;
+		margin-bottom: 65px;
+	}
+
+	#lingoCardNumber {
+		position: absolute;
+		margin-left: auto;
+		margin-right: auto;
+		left: 0;
+		right: 0;
+		top: 250px;
+	}
+
+	#fixedRight {
+		position: unset;
+		border-collapse: collapse;
+		border: 1px solid black;
+		margin-left: 10px;
+		padding: 20px;
+		margin-top: -155px;
+	}
+
+	#fixedLeft {
+		position: unset;
+		margin-right: 10px;
+
+		padding: 20px;
+		margin-top: 20px;
+	}
+
+	.hr {
+		visibility: hidden;
+	}
+
+	#hrke2 {
+		margin-top: -120px;
+	}
+
+	#wrong {
+		margin-top: 70px;
+	}
+
+	#returnButton {
+		margin-top: 500px;
+	}
+
+	#ballPitContainer {
+		width: 80%;
+	}
+
+	#grabBallButton,
+	#closeButton {
+		width: calc(100% / 3);
+		margin-left: calc(100% / 18);
+	}
+
+	#hasLingo {
+		width: calc(100% / 2);
+		margin-left: 1%;
+		float: left;
+		display: block;
+	}
+
+	#ballPitContainer {
+		display: inline;
+	}
+}
+
+@media screen and (max-width: 600px) {
+	#goodLuck {
+		margin-top: 410px;
+	}
+
+	#userControls,
+	#puzzling,
+	#lingoWordPuzzle {
+		width: 100%;
+	}
+
+	#userTurnInfo {
+		text-align: center;
+		width: 80%;
+	}
+
+	#wordLetters,
+	#guessLetters {
+		width: 80%;
+		margin-left: 10%;
+	}
+
+	#lingoCardNumber {
+		position: absolute;
+		margin-left: auto;
+		margin-right: auto;
+		left: 0;
+		right: 0;
+		top: 360px;
+		min-width: 320px;
+	}
+
+	#fixedRight {
+		position: unset;
+		margin-left: auto;
+		margin-right: auto;
+		padding: 20px;
+		margin-top: -150px;
+	}
+
+	#fixedLeft {
+		position: unset;
+		margin-left: auto;
+		margin-right: auto;
+		border-collapse: collapse;
+		border: 1px solid black;
+		padding: 20px;
+	}
+
+	.hr {
+		visibility: hidden;
+	}
+
+	#hrke {
+		margin-top: 150px;
+	}
+
+	#hrke2 {
+		margin-top: -80px;
+	}
+
+	#wrong {
+		margin-top: 50px;
+	}
+
+	#returnButton {
+		margin-top: 700px;
+	}
+
+	#ballPitContainer {
+		width: 80%;
+	}
+
+	#grabBallButton,
+	#closeButton {
+		width: calc(100% / 3);
+		margin-left: calc(100% / 18);
+	}
+
+	#hasLingo {
+		width: calc(100% / 3);
+		margin-left: 1%;
+		float: left;
+		display: block;
+	}
+
+	#ballPitContainer {
+		display: inline;
+	}
+
+	#lingoContainer {
+		width: 80%;
+		overflow: hidden;
+
+
+	}
+
+}

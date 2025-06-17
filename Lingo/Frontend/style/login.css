@@ -1,0 +1,87 @@
+h1 {
+	text-align: center;
+	color: rgb(2, 59, 74);
+}
+
+form {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	border: 2px black solid;
+	border-radius: 5%;
+	width: 40%;
+	margin-left: 30%;
+	background-color: rgb(8, 93, 94);
+}
+
+label {
+	padding: 10px;
+	color: rgb(207, 212, 212);
+}
+
+#loginButton {
+	margin: 10px;
+	width: 170px;
+	background-color: green;
+	color: rgb(207, 212, 212);
+}
+
+#forgotButton {
+	margin: 10px;
+	width: 170px;
+	background-color: rgb(181, 21, 21);
+	color: rgb(207, 212, 212);
+}
+
+
+#errorSpan {
+	color: red;
+	font-weight: bold;
+}
+
+#noAccount a {
+	color: rgb(207, 212, 212);
+}
+
+body {
+	background-image: url("../images/787863a56b90d5f42791890a53b368d7.jpg");
+	font-family: 'Barlow', sans-serif;
+
+}
+
+nav ul {
+	display: flex;
+	justify-content: space-around;
+	list-style: none;
+	font-size: 40px;
+	background-color: darkslategrey;
+	margin: -10px;
+	padding: 10px;
+	color: #66FCF1;
+}
+
+a {
+	text-decoration: none;
+	color: rgba(0, 94, 120, 1);
+	color: #66FCF1;
+}
+
+li {
+	text-align: center;
+	list-style: none;
+	color: white;
+}
+
+a:hover {
+	color: rgba(0, 152, 155, 1);
+}
+
+.active {
+	color: rgba(0, 152, 155, 1);
+}
+
+h1 {
+	margin-top: 3%;
+	color: #66FCF1;
+	text-align: center;
+}

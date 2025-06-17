@@ -1,0 +1,112 @@
+body {
+	background-image: radial-gradient(
+		circle farthest-corner at 10% 20%,
+		rgba(0, 152, 155, 1) 0.1%,
+		rgba(0, 94, 120, 1) 94.2%
+	);
+	font-family: 'Barlow', sans-serif;
+
+}
+
+h1,
+h2 {
+	text-align: center;
+	color: lightgrey;
+}
+
+button {
+	background-color: rgb(194, 191, 191);
+}
+
+input {
+	background-color: rgb(176, 175, 175);
+}
+table {
+	border: 1px black solid;
+	border-collapse: collapse;
+	margin-top: 10px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+tr,
+td {
+	border: 1px black solid;
+	width: 300px;
+	text-align: center;
+
+	border-collapse: collapse;
+	padding: 5px;
+	background-color: rgb(8, 93, 94);
+	color: rgb(211, 206, 206);
+}
+
+tr:nth-child(1) {
+	background-color: rgb(13, 69, 70);
+	color: rgb(211, 206, 206);
+}
+
+#vs {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+}
+
+#body {
+	text-align: center;
+	justify-content: center;
+}
+
+#play {
+	text-align: center;
+	margin-bottom: 10px;
+}
+
+#createdGame {
+	text-align: center;
+	font-size: large;
+	font-weight: bold;
+}
+
+body {
+	background-image: url("../images/787863a56b90d5f42791890a53b368d7.jpg");
+	font-family: 'Barlow', sans-serif;
+
+}
+
+nav ul {
+	display: flex;
+	justify-content: space-around;
+	list-style: none;
+	font-size: 40px;
+	background-color: darkslategrey;
+	margin: -10px;
+	padding: 10px;
+	color: #66FCF1;
+}
+
+a {
+	text-decoration: none;
+	color: rgba(0, 94, 120, 1);
+	color: #66FCF1;
+}
+
+li {
+	text-align: center;
+	list-style: none;
+	color: white;
+}
+
+a:hover {
+	color: rgba(0, 152, 155, 1);
+}
+
+.active {
+	color: rgba(0, 152, 155, 1);
+}
+
+h1 {
+	margin-top: 3%;
+	color: #66FCF1;
+	text-align: center;
+}

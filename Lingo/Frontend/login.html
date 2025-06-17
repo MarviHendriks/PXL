@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Login</title>
+		<link rel="stylesheet" href="./style/login.css" />
+		<script src="./js/login.js" defer></script>
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Barlow&display=swap" rel="stylesheet">
+	</head>
+	<body>
+		<nav>
+			<ul>
+				<li><a href="./index.html">Home</a></li>
+				<li><a href="./team.html">Team</a></li>
+				<li><a href="./register.html">Register</a></li>
+				<li><a class="active" href="./login.html">Login</a></li>
+			</ul>
+		</nav>
+		<h1>Please login below</h1>
+		<form>
+			<label for="userId">Email: </label>
+			<input
+				type="email"
+				name="email"
+				id="email"
+				placeholder="example@domain.com"
+				required
+			/>
+			<br />
+			<label for="password">Password: </label>
+			<input
+				type="password"
+				name="password"
+				id="password"
+				placeholder="pass1234"
+				required
+			/>
+			<br />
+			<span id="errorSpan"></span>
+			<input id="loginButton" type="button" value="Login" />
+			<br />
+			<span id="noAccount"
+				><a href="./register.html">No account yet? Register here.</a></span
+			>
+		</form>
+		<br /><br /><br /><br /><br /><br /><br /><br />
+		<br /><br /><br /><br /><br /><br />
+		<p></p>
+	</body>
+</html>

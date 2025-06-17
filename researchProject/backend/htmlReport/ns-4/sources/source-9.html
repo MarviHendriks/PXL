@@ -1,0 +1,195 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > Stallion</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">be.pxl.researchproject.domain</a>
+</div>
+
+<h1>Coverage Summary for Class: Stallion (be.pxl.researchproject.domain)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Stallion</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (14/14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (19/19)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package be.pxl.researchproject.domain;
+&nbsp;
+&nbsp;import jakarta.persistence.*;
+&nbsp;
+&nbsp;import java.time.LocalDate;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;@Entity
+&nbsp;public class Stallion {
+&nbsp;
+&nbsp;    @Id
+&nbsp;    @GeneratedValue
+&nbsp;    private Long id;
+&nbsp;    private String name;
+&nbsp;    private LocalDate dateOfBirth;
+&nbsp;    private double height;
+&nbsp;    private String gender;
+&nbsp;    private String colorCode;
+&nbsp;
+<b class="fc">&nbsp;    //PDF</b>
+&nbsp;    @Lob
+&nbsp;    @Column(columnDefinition = &quot;MEDIUMBLOB&quot;)
+<b class="fc">&nbsp;    private byte[] pdfFile;</b>
+<b class="fc">&nbsp;</b>
+<b class="fc">&nbsp;    public Stallion() {</b>
+<b class="fc">&nbsp;    }</b>
+<b class="fc">&nbsp;</b>
+<b class="fc">&nbsp;    public Stallion(String name, LocalDate dateOfBirth, double height, String gender, String colorCode) {</b>
+&nbsp;        this.name = name;
+&nbsp;        this.dateOfBirth = dateOfBirth;
+<b class="fc">&nbsp;        this.height = height;</b>
+&nbsp;        this.gender = gender.toLowerCase();
+&nbsp;        this.colorCode = colorCode;
+&nbsp;    }
+<b class="fc">&nbsp;    public Long getId() {</b>
+&nbsp;        return id;
+&nbsp;    }
+&nbsp;
+<b class="fc">&nbsp;    public void setId(Long id) {</b>
+&nbsp;        this.id = id;
+&nbsp;    }
+&nbsp;
+<b class="fc">&nbsp;    public String getName() {</b>
+&nbsp;        return name;
+&nbsp;    }
+&nbsp;
+<b class="fc">&nbsp;    public void setName(String name) {</b>
+&nbsp;        this.name = name;
+&nbsp;    }
+&nbsp;
+<b class="fc">&nbsp;    public LocalDate getDateOfBirth() {</b>
+&nbsp;        return dateOfBirth;
+&nbsp;    }
+&nbsp;
+<b class="fc">&nbsp;    public void setDateOfBirth(LocalDate dateOfBirth) {</b>
+&nbsp;        this.dateOfBirth = dateOfBirth;
+&nbsp;    }
+&nbsp;
+<b class="fc">&nbsp;    public double getHeight() {</b>
+&nbsp;        return height;
+&nbsp;    }
+&nbsp;
+<b class="fc">&nbsp;    public void setHeight(double height) {</b>
+&nbsp;        this.height = height;
+&nbsp;    }
+<b class="fc">&nbsp;</b>
+&nbsp;    public String getGender() {
+&nbsp;        return gender;
+&nbsp;    }
+<b class="fc">&nbsp;    public void setGender(String gender) {</b>
+&nbsp;        this.gender = gender;
+&nbsp;    }
+&nbsp;
+<b class="fc">&nbsp;    public String getColorCode() {</b>
+&nbsp;        return colorCode;
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setColorCode(String colorCode) {
+&nbsp;        this.colorCode = colorCode;
+&nbsp;    }
+&nbsp;
+&nbsp;    //PDF
+&nbsp;
+&nbsp;    public byte[] getPdfFile() {
+&nbsp;        return pdfFile;
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setPdfFile(byte[] pdfFile) {
+&nbsp;        this.pdfFile = pdfFile;
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-05-20 22:56</div>
+</div>
+</body>
+</html>

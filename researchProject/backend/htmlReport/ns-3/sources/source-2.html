@@ -1,0 +1,164 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > FoalController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">be.pxl.researchproject.controllers</a>
+</div>
+
+<h1>Coverage Summary for Class: FoalController (be.pxl.researchproject.controllers)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">FoalController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    87,5%
+  </span>
+  <span class="absValue">
+    (7/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    91,7%
+  </span>
+  <span class="absValue">
+    (11/12)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package be.pxl.researchproject.controllers;
+&nbsp;
+&nbsp;import be.pxl.researchproject.api.request.*;
+&nbsp;import be.pxl.researchproject.api.response.FoalDTO;
+&nbsp;import be.pxl.researchproject.domain.DiaryEntry;
+&nbsp;import be.pxl.researchproject.domain.Foal;
+&nbsp;import be.pxl.researchproject.service.FoalService;
+&nbsp;import be.pxl.researchproject.service.MareService;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.http.HttpStatus;
+&nbsp;import org.springframework.http.ResponseEntity;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;
+&nbsp;@RestController
+<b class="fc">&nbsp;public class FoalController {</b>
+&nbsp;    @Autowired
+&nbsp;    private FoalService foalService;
+&nbsp;
+&nbsp;    @GetMapping(&quot;/foals/search/{id}&quot;)
+&nbsp;    public FoalDTO getFoalByMareId(@PathVariable Long id){
+<b class="fc">&nbsp;        return foalService.findFoalByMareId(id);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/foals/search/foal/{id}&quot;)
+&nbsp;    public FoalDTO getFoalById(@PathVariable Long id){
+<b class="nc">&nbsp;        return foalService.findFoalById(id);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @DeleteMapping(&quot;/foals/{id}/delete&quot;)
+&nbsp;    public ResponseEntity&lt;Void&gt; deleteFoal(@PathVariable Long id, @RequestBody DeleteFoalRequest request) {
+<b class="fc">&nbsp;        foalService.deleteFoalById(id, request);</b>
+<b class="fc">&nbsp;        return ResponseEntity.noContent().build();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @PutMapping(&quot;/foals/{id}/update&quot;)
+&nbsp;    public ResponseEntity&lt;Void&gt; updateFoal(@PathVariable(&quot;id&quot;) long id,
+&nbsp;                                           @RequestBody UpdateFoalRequest request){
+<b class="fc">&nbsp;        foalService.updateFoal(id, request);</b>
+<b class="fc">&nbsp;        return ResponseEntity.noContent().build();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @PutMapping(&quot;/foals/deworming/{id}/update&quot;)
+&nbsp;    public ResponseEntity&lt;Void&gt; updateDeworming(@PathVariable(&quot;id&quot;) long id,
+&nbsp;                                                @RequestBody UpdateDewormingRequest request){
+<b class="fc">&nbsp;        foalService.updateDeworming(id, request);</b>
+<b class="fc">&nbsp;        return ResponseEntity.noContent().build();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @PostMapping(&quot;/foals/mare/{id}/add&quot;)
+&nbsp;    public ResponseEntity&lt;Foal&gt; addFoal(@PathVariable(&quot;id&quot;) long id,
+&nbsp;                                                      @RequestBody CreateFoalRequest request){
+<b class="fc">&nbsp;        Foal foal = foalService.addFoal(id, request);</b>
+<b class="fc">&nbsp;        return ResponseEntity.status(HttpStatus.CREATED).body(foal);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/foals/{id}/clients&quot;)
+&nbsp;    public  ResponseEntity&lt;Boolean&gt; getAmountOfClients(@PathVariable Long id){
+<b class="fc">&nbsp;        return ResponseEntity.ok(foalService.amountOfClients(id));</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-05-20 22:56</div>
+</div>
+</body>
+</html>
